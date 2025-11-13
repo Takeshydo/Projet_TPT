@@ -40,6 +40,7 @@ Packages/com.unity.package-manager.cache/
 *.xcworkspace
 
 # --- Visual Studio / Rider ---
+.vs
 .vscode/
 .idea/
 *.DotSettings.user
