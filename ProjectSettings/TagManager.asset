@@ -4,15 +4,12 @@
 TagManager:
   serializedVersion: 3
   tags:
-<<<<<<< HEAD
   - ZoneID
   - Front
   - Right
   - Back
   - Left
   - FighterPosition
-=======
->>>>>>> 3b2406fb488b55518e8bba4b89f51a569aebc62d
   - Fighter
   layers:
   - Default
