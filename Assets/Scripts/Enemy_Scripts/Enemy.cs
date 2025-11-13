@@ -1,0 +1,25 @@
+using UnityEditor.ShaderGraph.Internal;
+using UnityEngine;
+
+public class Enemy : MonoBehaviour
+{
+
+    //Var Donnée du Monstre
+    public float EnemyHP = 500.0f;
+    public float Damage = 15.0f;
+    public float Defense = 5.0f;
+
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
