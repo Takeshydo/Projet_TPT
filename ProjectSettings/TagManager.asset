@@ -11,7 +11,8 @@ TagManager:
   - Left
   - FighterPosition
   - Fighter
-  - Monted
+  - ladder
+  - ground
   layers:
   - Default
   - TransparentFX

@@ -3,17 +3,18 @@ using UnityEngine;
 public class Camera_Spring_Arm : MonoBehaviour
 {
     [Header("Target")]
-    public Transform target;           // Player
+    public Transform target; // Player
+    public bool rotatePlayerWithCamera = true;
 
     [Header("Spring Arm Settings")]
-    public Vector3 cameraLocalPosition = new Vector3(0, 5, -20); // Position caméra au bout du bras
-    public Vector3 offset = new Vector3(0, 2f, 0);              // Hauteur du bras
+    public Vector3 cameraLocalPosition = new Vector3(0, 5, -20);
+    public Vector3 offset = new Vector3(0, 2f, 0);
     public float rotationSpeed = 5f;
     public float minYAngle = -20f;
     public float maxYAngle = 60f;
 
     [Header("Collision Settings")]
-    public LayerMask collisionLayers;  // Layers pour détecter obstacles
+    public LayerMask collisionLayers;
     public float collisionRadius = 0.5f;
     public float smoothSpeed = 10f;
 
@@ -33,10 +34,8 @@ public class Camera_Spring_Arm : MonoBehaviour
                 Debug.LogWarning("Player not found!");
         }
 
-        // Création Spring Arm
         springArm = new GameObject("SpringArm").transform;
 
-        // Caméra attachée au Spring Arm
         transform.SetParent(springArm);
         transform.localPosition = cameraLocalPosition;
         transform.localRotation = Quaternion.identity;
@@ -48,7 +47,6 @@ public class Camera_Spring_Arm : MonoBehaviour
     {
         if (target == null) return;
 
-        // Rotation orbitale Spring Arm
         currentX += Input.GetAxis("Mouse X") * rotationSpeed;
         currentY -= Input.GetAxis("Mouse Y") * rotationSpeed;
         currentY = Mathf.Clamp(currentY, minYAngle, maxYAngle);
@@ -56,26 +54,28 @@ public class Camera_Spring_Arm : MonoBehaviour
         springArm.position = target.position + offset;
         springArm.rotation = Quaternion.Euler(currentY, currentX, 0);
 
-        // Position désirée caméra
         Vector3 desiredWorldPos = springArm.TransformPoint(defaultLocalPos);
         Vector3 dir = desiredWorldPos - springArm.position;
         float distance = dir.magnitude;
 
         RaycastHit hit;
-        // SphereCast corrigé pour détecter collisions
-        if (Physics.SphereCast(springArm.position, collisionRadius, dir.normalized, out hit, distance, collisionLayers, QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(springArm.position, collisionRadius, dir.normalized, out hit, distance, collisionLayers))
         {
-            // Glisser la caméra vers le Player
             Vector3 targetPos = springArm.position + dir.normalized * Mathf.Max(hit.distance - collisionRadius, 0.1f);
             transform.position = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
         }
         else
         {
-            // Position normale
             transform.position = Vector3.Lerp(transform.position, desiredWorldPos, smoothSpeed * Time.deltaTime);
         }
 
-        // Toujours regarder le Player
+        if (rotatePlayerWithCamera)
+        {
+            Vector3 forward = springArm.forward;
+            forward.y = 0;
+            target.rotation = Quaternion.Slerp(target.rotation, Quaternion.LookRotation(forward), 10f * Time.deltaTime);
+        }
+
         transform.LookAt(target.position + offset);
     }
 }
