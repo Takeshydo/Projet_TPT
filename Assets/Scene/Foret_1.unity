@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 453442702}
   - component: {fileID: 453442701}
   - component: {fileID: 453442700}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -473,7 +473,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: -20}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.1, y: 0.35023403, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 885422400}
@@ -629,12 +629,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b2e6f3969cd09e4ea44c6d7f7d46685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Camera_Spring_Arm
-  target: {fileID: 0}
-  armLength: 7
+  target: {fileID: 86769368}
+  cameraLocalPosition: {x: 0, y: 2, z: -75}
   offset: {x: 0, y: 2, z: 0}
   rotationSpeed: 5
   minYAngle: -20
   maxYAngle: 60
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  collisionRadius: 7
+  smoothSpeed: 10
 --- !u!1 &885422399
 GameObject:
   m_ObjectHideFlags: 0

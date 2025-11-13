@@ -6,15 +6,21 @@ public class Camera_Spring_Arm : MonoBehaviour
     public Transform target;           // Player
 
     [Header("Spring Arm Settings")]
-    public float armLength = 7f;       // Distance caméra / bras
-    public Vector3 offset = new Vector3(0, 2f, 0); // Hauteur du bras
-    public float rotationSpeed = 5f;   // Sensibilité souris
+    public Vector3 cameraLocalPosition = new Vector3(0, 5, -20); // Position caméra au bout du bras
+    public Vector3 offset = new Vector3(0, 2f, 0);              // Hauteur du bras
+    public float rotationSpeed = 5f;
     public float minYAngle = -20f;
     public float maxYAngle = 60f;
+
+    [Header("Collision Settings")]
+    public LayerMask collisionLayers;  // Layers pour détecter obstacles
+    public float collisionRadius = 0.5f;
+    public float smoothSpeed = 10f;
 
     private float currentX = 0f;
     private float currentY = 20f;
     private Transform springArm;
+    private Vector3 defaultLocalPos;
 
     void Start()
     {
@@ -27,30 +33,49 @@ public class Camera_Spring_Arm : MonoBehaviour
                 Debug.LogWarning("Player not found!");
         }
 
-        // Crée le Spring Arm (bras invisible)
+        // Création Spring Arm
         springArm = new GameObject("SpringArm").transform;
 
-        // Attache la caméra au Spring Arm
+        // Caméra attachée au Spring Arm
         transform.SetParent(springArm);
-        transform.localPosition = new Vector3(0, 0, -armLength); // caméra au bout du bras
-        transform.localRotation = Quaternion.identity;           // ne pivote pas
+        transform.localPosition = cameraLocalPosition;
+        transform.localRotation = Quaternion.identity;
+
+        defaultLocalPos = cameraLocalPosition;
     }
 
     void LateUpdate()
     {
         if (target == null) return;
 
-        // Rotation orbitale du Spring Arm autour du Player via la souris
+        // Rotation orbitale Spring Arm
         currentX += Input.GetAxis("Mouse X") * rotationSpeed;
         currentY -= Input.GetAxis("Mouse Y") * rotationSpeed;
         currentY = Mathf.Clamp(currentY, minYAngle, maxYAngle);
 
-        // Position du Spring Arm = Player + offset
         springArm.position = target.position + offset;
-
-        // Rotation du Spring Arm
         springArm.rotation = Quaternion.Euler(currentY, currentX, 0);
 
-        // La caméra reste fixée au bout du bras
+        // Position désirée caméra
+        Vector3 desiredWorldPos = springArm.TransformPoint(defaultLocalPos);
+        Vector3 dir = desiredWorldPos - springArm.position;
+        float distance = dir.magnitude;
+
+        RaycastHit hit;
+        // SphereCast corrigé pour détecter collisions
+        if (Physics.SphereCast(springArm.position, collisionRadius, dir.normalized, out hit, distance, collisionLayers, QueryTriggerInteraction.Ignore))
+        {
+            // Glisser la caméra vers le Player
+            Vector3 targetPos = springArm.position + dir.normalized * Mathf.Max(hit.distance - collisionRadius, 0.1f);
+            transform.position = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
+        }
+        else
+        {
+            // Position normale
+            transform.position = Vector3.Lerp(transform.position, desiredWorldPos, smoothSpeed * Time.deltaTime);
+        }
+
+        // Toujours regarder le Player
+        transform.LookAt(target.position + offset);
     }
 }
