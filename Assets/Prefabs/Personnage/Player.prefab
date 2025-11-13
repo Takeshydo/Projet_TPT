@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 34089210648256211}
   - component: {fileID: 5096965168029857042}
   - component: {fileID: 620212807648714181}
+  - component: {fileID: -4267028541162904400}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Fighter
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,3 +114,21 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4267028541162904400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737597223390585619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23866ba6cb5201340ba5e9f7547150df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Action
+  player: {fileID: 1737597223390585619}
+  zoneTags:
+  - Right
+  - Left
+  - Front
+  - Back
