@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5096965168029857042}
   - component: {fileID: 620212807648714181}
   - component: {fileID: -4267028541162904400}
+  - component: {fileID: -7756158408608734470}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -134,3 +135,17 @@ MonoBehaviour:
   - Back
   - Left
   positionTag: FighterPosition
+--- !u!114 &-7756158408608734470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737597223390585619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7210a6f9291b50e4c87304344445ad47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hero
+  HeroName: Stark
+  HeroLevel: 2

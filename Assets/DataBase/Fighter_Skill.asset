@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22a9ea657dff5c84492fee25a015a90e, type: 3}
+  m_Name: Fighter_Skill
+  m_EditorClassIdentifier: Assembly-CSharp::Skille_Table
+  Skills:
+  - {fileID: 11400000, guid: cd80edb42c829724590bfbb17e0aa1ea, type: 2}
+  - {fileID: 11400000, guid: 8982c8731d76acf4bb27fdc26a2d1f3b, type: 2}
+  - {fileID: 11400000, guid: d79605da0d7e42b439f41d1ab951e54a, type: 2}

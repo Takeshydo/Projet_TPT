@@ -5,6 +5,8 @@ public class Enemy : MonoBehaviour
 {
 
     //Var Donnée du Monstre
+    public string EnemyName = "Enemy1";
+    public int EnemyLvl = 5;
     public float EnemyHP = 500.0f;
     public float Damage = 15.0f;
     public float Defense = 5.0f;
