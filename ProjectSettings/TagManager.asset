@@ -14,7 +14,9 @@ TagManager:
   - ladder
   - ground
   - Enemy
-  layers:
+  - detect
+  - floor
+   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
