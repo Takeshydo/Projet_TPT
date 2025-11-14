@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3082450a57274d8a3a9f1c4bb8235, type: 3}
+  m_Name: Estoc
+  m_EditorClassIdentifier: Assembly-CSharp::Skills_Structure
+  SkillName: 
+  Icon: {fileID: 0}
+  Damage: 20
+  Critique: 1.25
+  Effets: None
+  Description: "Attaque d'estoc / Bonus par derri\xE8re"
