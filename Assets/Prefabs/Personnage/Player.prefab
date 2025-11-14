@@ -127,8 +127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Action
   player: {fileID: 1737597223390585619}
-  zoneTags:
-  - Right
-  - Left
+  enemy: {fileID: 3106388083754359187, guid: edd61043c9e57d94b9b7e4cb0f32af59, type: 3}
+  zoneOrder:
   - Front
+  - Right
   - Back
+  - Left
+  positionTag: FighterPosition

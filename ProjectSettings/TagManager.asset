@@ -13,6 +13,7 @@ TagManager:
   - Fighter
   - ladder
   - ground
+  - Enemy
   layers:
   - Default
   - TransparentFX
