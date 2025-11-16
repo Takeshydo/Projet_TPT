@@ -61,13 +61,13 @@ public class Player_Mouvement : MonoBehaviour
         if (isOnLadder)
         {
             // Escalade : X/Z bloqués, Y contrôlé
-            Vector3 vel = rb.linearVelocity;
-            vel.x = 0f;
-            vel.z = 0f;
-            vel.y = verticalInput * climbSpeed;
-            rb.linearVelocity = vel;
+            Vector3 newPos = rb.position;
+            newPos.y += verticalInput * climbSpeed * Time.fixedDeltaTime;
+            rb.MovePosition(newPos);
 
-            Debug.Log("Escalade, verticalInput=" + verticalInput + ", linearVelocity=" + rb.linearVelocity);
+            rb.useGravity = false;
+
+            Debug.Log("Escalade, verticalInput=" + verticalInput + ", position=" + rb.position);
         }
         else
         {
@@ -119,12 +119,9 @@ public class Player_Mouvement : MonoBehaviour
         {
             isOnLadder = false;
             atBottomOfLadder = false;
-            rb.useGravity = true;
 
-            // Réinitialiser la vélocité verticale pour ne pas s'envoler
-            Vector3 vel = rb.linearVelocity;
-            vel.y = 0f;
-            rb.linearVelocity = vel;
+            rb.useGravity = true;
+            rb.MovePosition(rb.position); // Stabiliser le joueur
 
             Debug.Log("Haut de l'échelle détecté, mouvement horizontal réactivé");
         }
@@ -135,6 +132,7 @@ public class Player_Mouvement : MonoBehaviour
         if (other.CompareTag("ladder"))
         {
             isOnLadder = false;
+            rb.useGravity = true;
             Debug.Log("Sorti de l'échelle");
         }
     }
@@ -146,6 +144,10 @@ public class Player_Mouvement : MonoBehaviour
         {
             atBottomOfLadder = true;
             isOnLadder = false; // Sort de l'échelle
+
+            rb.useGravity = true;
+            rb.MovePosition(rb.position); // Stabiliser le joueur
+
             Debug.Log("Arrivé en bas de l'échelle, mouvement horizontal bloqué");
         }
     }
