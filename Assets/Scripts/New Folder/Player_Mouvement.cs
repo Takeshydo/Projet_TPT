@@ -16,10 +16,9 @@ public class Player_Mouvement : MonoBehaviour
     public Transform cameraTransform;
 
     [Header("Détection")]
-    public Transform front; // ton objet Front
+    public Transform front;
 
     private Rigidbody rb;
-
     private Vector3 moveInput;
     private float verticalInput;
 
@@ -39,7 +38,7 @@ public class Player_Mouvement : MonoBehaviour
     {
         if (Keyboard.current == null) return;
 
-        // Déplacement horizontal
+        // Déplacement sol
         moveInput = Vector3.zero;
         if (Keyboard.current.wKey.isPressed) moveInput += Vector3.forward;
         if (Keyboard.current.sKey.isPressed) moveInput += Vector3.back;
@@ -47,7 +46,7 @@ public class Player_Mouvement : MonoBehaviour
         if (Keyboard.current.dKey.isPressed) moveInput += Vector3.right;
         moveInput.Normalize();
 
-        // Input vertical pour l'escalade
+        // Input vertical sur échelle
         verticalInput = 0f;
         if (isOnLadder)
         {
@@ -56,52 +55,53 @@ public class Player_Mouvement : MonoBehaviour
         }
     }
 
-   private void FixedUpdate()
+    private void FixedUpdate()
     {
+        // ESCALADE
         if (isOnLadder)
         {
-            // Désactiver la gravité
             rb.useGravity = false;
 
-            // Déplacement vertical uniquement
             Vector3 newPos = rb.position;
             newPos.y += verticalInput * climbSpeed * Time.fixedDeltaTime;
             rb.MovePosition(newPos);
 
-            // Bloquer toute rotation sur l'échelle
+            // Bloquer la rotation du joueur sur l'échelle
             rb.rotation = Quaternion.Euler(0f, rb.rotation.eulerAngles.y, 0f);
+            return;
+        }
+
+        // SOL
+        rb.useGravity = true;
+
+        Vector3 camForward = cameraTransform.forward;
+        camForward.y = 0f;
+        camForward.Normalize();
+
+        Vector3 camRight = cameraTransform.right;
+        camRight.y = 0f;
+        camRight.Normalize();
+
+        Vector3 moveDirection = camForward * moveInput.z + camRight * moveInput.x;
+
+        if (moveDirection.sqrMagnitude > 0.01f)
+        {
+            rb.MovePosition(rb.position + moveDirection * speed * Time.fixedDeltaTime);
+
+            // Tourner le joueur seulement si il n'est pas sur l'échelle
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime));
         }
         else
         {
-            // Déplacement horizontal normal
-            rb.useGravity = true;
-
-            Vector3 camForward = cameraTransform.forward;
-            camForward.y = 0f;
-            camForward.Normalize();
-
-            Vector3 camRight = cameraTransform.right;
-            camRight.y = 0f;
-            camRight.Normalize();
-
-            Vector3 moveDirection = camForward * moveInput.z + camRight * moveInput.x;
-
-            if (moveDirection.sqrMagnitude > 0.01f)
-            {
-                rb.MovePosition(rb.position + moveDirection * speed * Time.fixedDeltaTime);
-
-                // Rotation joueur
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime));
-            }
+            // 🔥 ANTI-GLISSE : rester sur place sans utiliser rb.velocity
+            rb.MovePosition(rb.position);
         }
     }
 
-
-
-    // ---------------------------------------------------
-    // MÉTHODES POUR ÊTRE APPELÉES PAR FRONT
-    // ---------------------------------------------------
+    // ------------------------------------------
+    // FRONT (détection échelle)
+    // ------------------------------------------
     public void SetFrontTouchingLadder(bool state)
     {
         isOnLadder = state;
@@ -112,9 +112,9 @@ public class Player_Mouvement : MonoBehaviour
             Debug.Log("FRONT quitte l’échelle → escalade désactivée");
     }
 
-    // ---------------------------------------------------
+    // ------------------------------------------
     // COLLISIONS
-    // ---------------------------------------------------
+    // ------------------------------------------
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("ground") && isOnLadder)
