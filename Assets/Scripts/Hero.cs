@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
@@ -5,7 +6,15 @@ public class Hero : MonoBehaviour
 
     public string HeroName = "Stark";
     public int HeroLevel = 2;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float MaxHP = 250f;
+    public float currentHP = 250f;
+    public int MaxXP = 100;
+    public float currentXP = 0f;
+    public float Force = 15f;
+    public float Defense = 5f;
+    /*public float Precision = 100f;*/
+
+
     void Start()
     {
 

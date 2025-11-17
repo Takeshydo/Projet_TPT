@@ -13,6 +13,14 @@ public class Action : MonoBehaviour
     private Dictionary<string, Transform> zonePositions = new Dictionary<string, Transform>();
     private int currentZoneIndex = 0;
 
+    //Turn Base System
+    public int PA = 1;
+    public int actuelAction = 2;
+    public int actionLeft;
+    public bool cantMove = false;
+
+    public bool isMyTurn = false;
+
     void Start()
     {
         // Récupère les positions des zones
@@ -33,6 +41,9 @@ public class Action : MonoBehaviour
             }
         }
 
+        //Set UP action
+        StartTurn();
+
         // Place le joueur en "Front"
         MovePlayerTo(zoneOrder[currentZoneIndex]);
     }
@@ -40,15 +51,7 @@ public class Action : MonoBehaviour
     void Update()
     {
 
-        if (Keyboard.current.dKey.wasPressedThisFrame)
-        {
-            MoveClockwise();
-        }
-
-        else if (Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            MoveCounterClockwise();
-        }
+        MoveAction();
 
 
         if (enemy != null && player != null)
@@ -82,6 +85,42 @@ public class Action : MonoBehaviour
         {
             Debug.LogError($"Position introuvable pour la zone {zoneTag}");
         }
+    }
+    void StartTurn()
+    {
+        actionLeft = PA * actuelAction;
+        isMyTurn = true;
+        cantMove = false;
+    }
+
+    public void MoveAction(int cost = 1)
+    {
+        if (!cantMove)
+        {
+            if (Keyboard.current.dKey.wasPressedThisFrame)
+            {
+                MoveClockwise();
+                cantMove = true;
+            }
+            else if (Keyboard.current.aKey.wasPressedThisFrame)
+            {
+                MoveCounterClockwise();
+                cantMove = true;
+            }
+        }
+
+        actionLeft -= cost;
+        //Debug.Log(actionLeft);
+    }
+    public void AttackAction(int cost = 1)
+    {
+        //Script compétence avec base de donné
+        actionLeft -= cost;
+    }
+    public void ObjectAction(int cost = 1)
+    {
+        //Script inventaire pour object
+        actionLeft -= cost;
     }
 }
 
