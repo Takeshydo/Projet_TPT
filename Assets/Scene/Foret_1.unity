@@ -266,7 +266,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   speed: 20
   climbSpeed: 20
-  cameraTransform: {fileID: 0}
+  isOnLadder: 0
+  atBottomOfLadder: 0
+  cameraTransform: {fileID: 755245215}
+  front: {fileID: 86769368}
 --- !u!54 &86769372
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -655,7 +658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b2e6f3969cd09e4ea44c6d7f7d46685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Camera_Spring_Arm
-  target: {fileID: 86769368}
+  target: {fileID: 0}
   rotatePlayerWithCamera: 1
   cameraLocalPosition: {x: 0, y: 2, z: -75}
   offset: {x: 0, y: 2, z: 0}
@@ -842,6 +845,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1201766198}
   - component: {fileID: 1201766199}
+  - component: {fileID: 1201766200}
   m_Layer: 0
   m_Name: Front
   m_TagString: Untagged
@@ -859,7 +863,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0.585}
-  m_LocalScale: {x: 1.3707, y: 1, z: 0}
+  m_LocalScale: {x: 0.43305445, y: 0.92421, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 86769368}
@@ -881,10 +885,23 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.14277491}
   m_Center: {x: 0.0000036140286, y: 0, z: 0.42861307}
+--- !u!114 &1201766200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201766197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f502aa12646274db35a38ee5b010f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FrontLadderDetector
+  player: {fileID: 86769371}
 --- !u!1 &1412316282
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,7 +915,7 @@ GameObject:
   - component: {fileID: 1412316285}
   - component: {fileID: 1412316288}
   m_Layer: 3
-  m_Name: Cube
+  m_Name: Ladder
   m_TagString: ladder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -990,7 +1007,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

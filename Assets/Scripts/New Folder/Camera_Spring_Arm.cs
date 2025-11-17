@@ -3,7 +3,7 @@ using UnityEngine;
 public class Camera_Spring_Arm : MonoBehaviour
 {
     [Header("Target")]
-    public Transform target; // Player
+    public Transform target;
     public bool rotatePlayerWithCamera = true;
 
     [Header("Spring Arm Settings")]

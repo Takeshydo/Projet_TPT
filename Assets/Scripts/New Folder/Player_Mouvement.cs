@@ -5,19 +5,21 @@ using UnityEngine.InputSystem;
 public class Player_Mouvement : MonoBehaviour
 {
     [Header("Paramètres de déplacement")]
-    public float speed = 5f; // Vitesse au sol
+    public float speed = 5f;
 
     [Header("Paramètres d'escalade")]
-    public float climbSpeed = 5f; // Vitesse d'escalade
-    private bool isOnLadder = false; // Le joueur touche une échelle
-    private bool atBottomOfLadder = false; // Arrivé en bas de l'échelle
+    public float climbSpeed = 5f;
+    public bool isOnLadder = false;
+    public bool atBottomOfLadder = false;
 
     [Header("Camera")]
-    public Transform cameraTransform; // Référence à la caméra
+    public Transform cameraTransform;
+
+    [Header("Détection")]
+    public Transform front; // ton objet Front
 
     private Rigidbody rb;
 
-    // Inputs stockés pour FixedUpdate
     private Vector3 moveInput;
     private float verticalInput;
 
@@ -30,8 +32,6 @@ public class Player_Mouvement : MonoBehaviour
             Camera cam = Camera.main;
             if (cam != null)
                 cameraTransform = cam.transform;
-            else
-                Debug.LogError("Aucune caméra avec le tag MainCamera trouvée.");
         }
     }
 
@@ -39,7 +39,7 @@ public class Player_Mouvement : MonoBehaviour
     {
         if (Keyboard.current == null) return;
 
-        // Récupération des inputs horizontaux
+        // Déplacement horizontal
         moveInput = Vector3.zero;
         if (Keyboard.current.wKey.isPressed) moveInput += Vector3.forward;
         if (Keyboard.current.sKey.isPressed) moveInput += Vector3.back;
@@ -47,7 +47,7 @@ public class Player_Mouvement : MonoBehaviour
         if (Keyboard.current.dKey.isPressed) moveInput += Vector3.right;
         moveInput.Normalize();
 
-        // Récupération de l'input vertical si sur échelle
+        // Input vertical pour l'escalade
         verticalInput = 0f;
         if (isOnLadder)
         {
@@ -56,99 +56,79 @@ public class Player_Mouvement : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+   private void FixedUpdate()
     {
         if (isOnLadder)
         {
-            // Escalade : X/Z bloqués, Y contrôlé
+            // Désactiver la gravité
+            rb.useGravity = false;
+
+            // Déplacement vertical uniquement
             Vector3 newPos = rb.position;
             newPos.y += verticalInput * climbSpeed * Time.fixedDeltaTime;
             rb.MovePosition(newPos);
 
-            rb.useGravity = false;
-
-            Debug.Log("Escalade, verticalInput=" + verticalInput + ", position=" + rb.position);
+            // Bloquer toute rotation sur l'échelle
+            rb.rotation = Quaternion.Euler(0f, rb.rotation.eulerAngles.y, 0f);
         }
         else
         {
-            // Déplacement horizontal
+            // Déplacement horizontal normal
+            rb.useGravity = true;
+
             Vector3 camForward = cameraTransform.forward;
             camForward.y = 0f;
             camForward.Normalize();
+
             Vector3 camRight = cameraTransform.right;
             camRight.y = 0f;
             camRight.Normalize();
 
             Vector3 moveDirection = camForward * moveInput.z + camRight * moveInput.x;
 
-            // Bloquer horizontal si arrivé en bas de l'échelle et S n'est pas appuyé
-            if (atBottomOfLadder && !Keyboard.current.sKey.isPressed)
-            {
-                moveDirection = Vector3.zero;
-            }
-
             if (moveDirection.sqrMagnitude > 0.01f)
             {
-                Vector3 targetPos = rb.position + moveDirection * speed * Time.fixedDeltaTime;
-                rb.MovePosition(targetPos);
-            }
+                rb.MovePosition(rb.position + moveDirection * speed * Time.fixedDeltaTime);
 
-            rb.useGravity = true;
-
-            // Débloquer horizontal si S est appuyé pour descendre
-            if (atBottomOfLadder && Keyboard.current.sKey.isPressed)
-            {
-                atBottomOfLadder = false;
-                Debug.Log("S pressé, mouvement horizontal débloqué");
+                // Rotation joueur
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime));
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+
+
+    // ---------------------------------------------------
+    // MÉTHODES POUR ÊTRE APPELÉES PAR FRONT
+    // ---------------------------------------------------
+    public void SetFrontTouchingLadder(bool state)
     {
-        // Début de l'escalade
-        if (other.CompareTag("ladder"))
-        {
-            isOnLadder = true;
-            atBottomOfLadder = false;
-            Debug.Log("Entré dans l'échelle, mouvement horizontal bloqué");
-        }
+        isOnLadder = state;
 
-        // Détection haut de l'échelle
-        if (other.CompareTag("floor") && isOnLadder)
-        {
-            isOnLadder = false;
-            atBottomOfLadder = false;
-
-            rb.useGravity = true;
-            rb.MovePosition(rb.position); // Stabiliser le joueur
-
-            Debug.Log("Haut de l'échelle détecté, mouvement horizontal réactivé");
-        }
+        if (state)
+            Debug.Log("FRONT touche l’échelle → escalade activée");
+        else
+            Debug.Log("FRONT quitte l’échelle → escalade désactivée");
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("ladder"))
-        {
-            isOnLadder = false;
-            rb.useGravity = true;
-            Debug.Log("Sorti de l'échelle");
-        }
-    }
-
+    // ---------------------------------------------------
+    // COLLISIONS
+    // ---------------------------------------------------
     private void OnCollisionEnter(Collision collision)
     {
-        // Arrivé en bas de l'échelle
         if (collision.collider.CompareTag("ground") && isOnLadder)
         {
             atBottomOfLadder = true;
-            isOnLadder = false; // Sort de l'échelle
-
+            isOnLadder = false;
             rb.useGravity = true;
-            rb.MovePosition(rb.position); // Stabiliser le joueur
-
-            Debug.Log("Arrivé en bas de l'échelle, mouvement horizontal bloqué");
+            Debug.Log("Bas de l'échelle détecté");
         }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag("ground"))
+            atBottomOfLadder = false;
     }
 }
