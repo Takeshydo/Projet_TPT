@@ -18,3 +18,4 @@ MonoBehaviour:
   Critique: 1.25
   Effets: None
   Description: Attaque tranchante de la lame
+  IsActive: 1

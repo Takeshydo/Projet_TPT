@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.InputSystem;
+using UnityEditor.PackageManager;
 
 public class Action : MonoBehaviour
 {
@@ -50,10 +51,6 @@ public class Action : MonoBehaviour
 
     void Update()
     {
-
-        MoveAction();
-
-
         if (enemy != null && player != null)
         {
             Vector3 lookDir = enemy.transform.position - player.transform.position;
@@ -93,25 +90,6 @@ public class Action : MonoBehaviour
         cantMove = false;
     }
 
-    public void MoveAction(int cost = 1)
-    {
-        if (!cantMove)
-        {
-            if (Keyboard.current.dKey.wasPressedThisFrame)
-            {
-                MoveClockwise();
-                cantMove = true;
-            }
-            else if (Keyboard.current.aKey.wasPressedThisFrame)
-            {
-                MoveCounterClockwise();
-                cantMove = true;
-            }
-        }
-
-        actionLeft -= cost;
-        //Debug.Log(actionLeft);
-    }
     public void AttackAction(int cost = 1)
     {
         //Script compétence avec base de donné
@@ -121,6 +99,43 @@ public class Action : MonoBehaviour
     {
         //Script inventaire pour object
         actionLeft -= cost;
+    }
+
+    public void MoveRight(int cost = 1)
+    {
+        if (!cantMove)
+        {
+            MoveClockwise();
+            cantMove = true;
+            actionLeft -= cost;
+        }
+        return;
+    }
+
+    public void MoveLeft(int cost = 1)
+    {
+        if (!cantMove)
+        {
+            MoveCounterClockwise();
+            cantMove = true;
+            actionLeft -= cost;
+        }
+        return;
+    }
+
+    //Detection de zone pour UI 
+
+    public string GetCurrentZone() => zoneOrder[currentZoneIndex];
+
+    public string GetRightZone()
+    {
+        int index = (currentZoneIndex + 1) % zoneOrder.Length;
+        return zoneOrder[index];
+    }
+    public string GetLeftZone()
+    {
+        int index = (currentZoneIndex - 1 + zoneOrder.Length) % zoneOrder.Length;
+        return zoneOrder[index];
     }
 }
 

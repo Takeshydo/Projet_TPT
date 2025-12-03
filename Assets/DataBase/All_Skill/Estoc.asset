@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0f3082450a57274d8a3a9f1c4bb8235, type: 3}
   m_Name: Estoc
   m_EditorClassIdentifier: Assembly-CSharp::Skills_Structure
-  SkillName: 
+  SkillName: Estoc
   Icon: {fileID: 0}
   Damage: 20
   Critique: 1.25
   Effets: None
   Description: "Attaque d'estoc / Bonus par derri\xE8re"
+  IsActive: 1
