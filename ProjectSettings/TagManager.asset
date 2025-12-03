@@ -16,7 +16,8 @@ TagManager:
   - Enemy
   - detect
   - floor
-   layers:
+  - Boss_detect
+  layers:
   - Default
   - TransparentFX
   - Ignore Raycast

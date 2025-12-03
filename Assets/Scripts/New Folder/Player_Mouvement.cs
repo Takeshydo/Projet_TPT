@@ -71,31 +71,20 @@ public class Player_Mouvement : MonoBehaviour
             return;
         }
 
-        // SOL
         rb.useGravity = true;
 
-        Vector3 camForward = cameraTransform.forward;
-        camForward.y = 0f;
-        camForward.Normalize();
+        // Déplacement via TransformDirection
+        Vector3 direction = cameraTransform.TransformDirection(moveInput);
+        direction.y = 0f; // ne pas bouger verticalement
+        direction.Normalize();
 
-        Vector3 camRight = cameraTransform.right;
-        camRight.y = 0f;
-        camRight.Normalize();
-
-        Vector3 moveDirection = camForward * moveInput.z + camRight * moveInput.x;
-
-        if (moveDirection.sqrMagnitude > 0.01f)
+        if (direction.sqrMagnitude > 0.01f)
         {
-            rb.MovePosition(rb.position + moveDirection * speed * Time.fixedDeltaTime);
+            transform.Translate(direction * speed * Time.fixedDeltaTime, Space.World);
 
-            // Tourner le joueur seulement si il n'est pas sur l'échelle
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime));
-        }
-        else
-        {
-            // 🔥 ANTI-GLISSE : rester sur place sans utiliser rb.velocity
-            rb.MovePosition(rb.position);
+            // Tourner le joueur vers la direction du déplacement
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.fixedDeltaTime);
         }
     }
 
