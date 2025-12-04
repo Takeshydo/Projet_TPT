@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     public float EnemyHP = 500.0f;
     public float Damage = 15.0f;
     public float Defense = 5.0f;
-
+    public string status = "None";
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,6 +21,11 @@ public class Enemy : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+
+    }
+
+    public void TakeDamage(float amount)
     {
 
     }

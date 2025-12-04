@@ -16,6 +16,7 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Damage: 15
   Critique: 1.25
+  Condition: None
   Effets: None
   Description: Attaque tranchante de la lame
   IsActive: 1

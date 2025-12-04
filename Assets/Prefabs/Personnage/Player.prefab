@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 620212807648714181}
   - component: {fileID: -4267028541162904400}
   - component: {fileID: -7756158408608734470}
+  - component: {fileID: -6226560796705487853}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -135,6 +136,11 @@ MonoBehaviour:
   - Back
   - Left
   positionTag: FighterPosition
+  PA: 1
+  actuelAction: 2
+  actionLeft: 0
+  cantMove: 0
+  isMyTurn: 0
 --- !u!114 &-7756158408608734470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,3 +155,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Hero
   HeroName: Stark
   HeroLevel: 2
+  MaxHP: 250
+  currentHP: 250
+  MaxXP: 100
+  currentXP: 0
+  Force: 15
+  Defense: 5
+--- !u!54 &-6226560796705487853
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737597223390585619}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

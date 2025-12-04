@@ -11,8 +11,11 @@ public class Action : MonoBehaviour
     [SerializeField] private string[] zoneOrder = { "Front", "Right", "Back", "Left" }; // ordre horaire
     [SerializeField] private string positionTag = "FighterPosition";
 
+    private Enemy enemyScript;
+
     private Dictionary<string, Transform> zonePositions = new Dictionary<string, Transform>();
     private int currentZoneIndex = 0;
+    private ZoneArea.ZoneType currentZone;
 
     //Turn Base System
     public int PA = 1;
@@ -24,6 +27,10 @@ public class Action : MonoBehaviour
 
     void Start()
     {
+        if (enemy != null)
+        {
+            enemyScript = enemy.GetComponent<Enemy>();
+        }
         // Récupère les positions des zones
         foreach (string zoneTag in zoneOrder)
         {
@@ -90,9 +97,22 @@ public class Action : MonoBehaviour
         cantMove = false;
     }
 
-    public void AttackAction(int cost = 1)
+    public void AttackAction(Skills_Structure skills)
     {
-        //Script compétence avec base de donné
+        int cost = 1;
+        if (!isMyTurn) return;
+
+        if (skills.Damage > 0)
+        {
+            enemyScript.TakeDamage(skills.Damage);
+        }
+
+        if (currentZoneIndex == 1 || currentZoneIndex == 3)
+        {
+            enemyScript.status = skills.Effets;
+        }
+
+
         actionLeft -= cost;
     }
     public void ObjectAction(int cost = 1)
@@ -137,5 +157,16 @@ public class Action : MonoBehaviour
         int index = (currentZoneIndex - 1 + zoneOrder.Length) % zoneOrder.Length;
         return zoneOrder[index];
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // L'autre objet doit être IsTrigger = true
+        if (other.CompareTag("Front") || other.CompareTag("Right") || other.CompareTag("Back") || other.CompareTag("Left"))
+        {
+            currentZone = ZoneArea.TagToZoneType(other.tag);
+            Debug.Log($"Entré dans zone : {other.tag} => {currentZone}");
+        }
+    }
+
 }
 

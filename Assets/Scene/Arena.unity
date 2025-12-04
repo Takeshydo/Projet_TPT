@@ -492,6 +492,7 @@ GameObject:
   m_Component:
   - component: {fileID: 249058807}
   - component: {fileID: 249058808}
+  - component: {fileID: 249058809}
   m_Layer: 0
   m_Name: Back
   m_TagString: Back
@@ -536,6 +537,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &249058809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249058806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0295b10d806b94687bf9bc5095c7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZoneArea
 --- !u!1 &252653676
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,6 +813,7 @@ GameObject:
   m_Component:
   - component: {fileID: 485581713}
   - component: {fileID: 485581714}
+  - component: {fileID: 485581715}
   m_Layer: 0
   m_Name: FrontZone
   m_TagString: Front
@@ -844,6 +858,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &485581715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485581712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0295b10d806b94687bf9bc5095c7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZoneArea
 --- !u!1 &518732688
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,6 +933,7 @@ GameObject:
   m_Component:
   - component: {fileID: 553570513}
   - component: {fileID: 553570514}
+  - component: {fileID: 553570515}
   m_Layer: 0
   m_Name: SideRight
   m_TagString: Right
@@ -951,6 +978,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &553570515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553570512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0295b10d806b94687bf9bc5095c7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZoneArea
 --- !u!1 &650432952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2184,6 +2223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1008311215}
   - component: {fileID: 1008311216}
+  - component: {fileID: 1008311217}
   m_Layer: 0
   m_Name: SideLeft
   m_TagString: Left
@@ -2228,6 +2268,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1008311217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008311214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0295b10d806b94687bf9bc5095c7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZoneArea
 --- !u!1 &1029265137
 GameObject:
   m_ObjectHideFlags: 0

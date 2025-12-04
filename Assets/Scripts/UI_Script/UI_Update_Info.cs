@@ -97,6 +97,9 @@ public class UI_Update_Info : MonoBehaviour
 
         if (Keyboard.current.digit1Key.wasPressedThisFrame && A_ActionM && canProcessInput)
         {
+            canProcessInput = false;
+            StartCoroutine(InputDelay(0.2f));
+
             AttackButton.onClick.Invoke();
             A_Attack = true;
             A_ActionM = false;
@@ -106,9 +109,7 @@ public class UI_Update_Info : MonoBehaviour
                 skillBG.GenerateSkillButtons();
                 SkillGen = true;
             }
-
-            StartCoroutine(InputDelay(0.8f));
-
+            return;
         }
         if (Keyboard.current.digit2Key.wasPressedThisFrame && !hasMoved && A_ActionM)
         {
@@ -247,6 +248,5 @@ public class UI_Update_Info : MonoBehaviour
         canProcessInput = false;
         yield return new WaitForSeconds(delay);
         canProcessInput = true;
-
     }
 }

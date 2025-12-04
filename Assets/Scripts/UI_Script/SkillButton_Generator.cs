@@ -40,6 +40,9 @@ public class SkillButtonGenerator : MonoBehaviour
             if (txt != null)
                 txt.text = $"{buttonKeys[keyIndex]} - {skill.SkillName}";
 
+            Button btn = newButton.GetComponent<Button>();
+            Skills_Structure capturedSkill = skill;
+            //btn.onClick.AddListener(() => heroAction.AttackAction(capturedSkill));
             keyIndex++; // Passe à la touche suivante
         }
     }
