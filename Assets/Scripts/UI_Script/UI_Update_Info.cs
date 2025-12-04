@@ -26,7 +26,7 @@ public class UI_Update_Info : MonoBehaviour
 
     public GameObject hero;
     public GameObject enemy;
-    private Action HeroAction;
+    public Action HeroAction;
     public SkillButtonGenerator skillBG;
     public CanvasGroup ActionUI;
     public CanvasGroup AttackUI;
@@ -41,6 +41,7 @@ public class UI_Update_Info : MonoBehaviour
     private bool A_ActionM = true;
     private bool SkillGen = false;
     private bool hasMoved = false;
+    private bool hasAttack = false;
 
     private bool canProcessInput = true;
 
@@ -95,7 +96,7 @@ public class UI_Update_Info : MonoBehaviour
     {
         if (!canProcessInput) return;
 
-        if (Keyboard.current.digit1Key.wasPressedThisFrame && A_ActionM && canProcessInput)
+        if (Keyboard.current.digit1Key.wasPressedThisFrame && A_ActionM && canProcessInput && !hasAttack)
         {
             canProcessInput = false;
             StartCoroutine(InputDelay(0.2f));
@@ -145,15 +146,21 @@ public class UI_Update_Info : MonoBehaviour
         {
             if (Keyboard.current.digit1Key.wasPressedThisFrame)
             {
-                Debug.Log("Attack 1");
+                TriggerSkillByIndex(0);
+                ActionMenu();
+                hasAttack = true;
             }
             if (Keyboard.current.digit2Key.wasPressedThisFrame)
             {
-                Debug.Log("Attack 2");
+                TriggerSkillByIndex(1);
+                ActionMenu();
+                hasAttack = true;
             }
             if (Keyboard.current.digit3Key.wasPressedThisFrame)
             {
-                Debug.Log("Attack 3");
+                TriggerSkillByIndex(2);
+                ActionMenu();
+                hasAttack = true;
             }
         }
 
@@ -248,5 +255,14 @@ public class UI_Update_Info : MonoBehaviour
         canProcessInput = false;
         yield return new WaitForSeconds(delay);
         canProcessInput = true;
+    }
+    
+    void TriggerSkillByIndex(int index)
+    {
+        if (HeroAction.equippedSkills == null) return;
+        if (index >= HeroAction.equippedSkills.Count) return;
+
+        Skills_Structure skill = HeroAction.equippedSkills[index];
+        HeroAction.AttackAction(skill);
     }
 }

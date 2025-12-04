@@ -7,8 +7,8 @@ public class Skills_Structure : ScriptableObject
     public Sprite Icon;
     [Header("Gameplay")]
     public float Damage;
-    public float Critique; //Pour les position
-    public string Condition;
+    public bool Critique; //Pour les position
+    public ZoneArea.ZoneType condition;
     public string Effets; //Déséquilibre / Chute / Commotion | Hémorragie | Debuffs
     public string Description; //Info : Attaque de Flancs déséquilibre etc....
     public bool IsActive;

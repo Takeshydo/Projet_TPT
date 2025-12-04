@@ -12,6 +12,7 @@ public class Hero : MonoBehaviour
     public float currentXP = 0f;
     public float Force = 15f;
     public float Defense = 5f;
+    public float Critique = 1.05f;
     /*public float Precision = 100f;*/
 
 

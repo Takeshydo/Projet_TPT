@@ -12,6 +12,7 @@ public class Action : MonoBehaviour
     [SerializeField] private string positionTag = "FighterPosition";
 
     private Enemy enemyScript;
+    private Hero Herostat;
 
     private Dictionary<string, Transform> zonePositions = new Dictionary<string, Transform>();
     private int currentZoneIndex = 0;
@@ -22,14 +23,20 @@ public class Action : MonoBehaviour
     public int actuelAction = 2;
     public int actionLeft;
     public bool cantMove = false;
-
+    public bool cantAttack =false;
     public bool isMyTurn = false;
+
+    public List<Skills_Structure> equippedSkills = new List<Skills_Structure>();
 
     void Start()
     {
         if (enemy != null)
         {
             enemyScript = enemy.GetComponent<Enemy>();
+        }
+        if (player != null)
+        {
+            Herostat = player.GetComponent<Hero>();
         }
         // Récupère les positions des zones
         foreach (string zoneTag in zoneOrder)
@@ -95,6 +102,19 @@ public class Action : MonoBehaviour
         actionLeft = PA * actuelAction;
         isMyTurn = true;
         cantMove = false;
+        cantAttack = false;
+    }
+
+    void EndofTurn()
+    {
+        if(actionLeft == 0)
+        {
+            Debug.Log("Fin du tour");
+            isMyTurn =false;
+        }
+
+        //Script System TPT
+        
     }
 
     public void AttackAction(Skills_Structure skills)
@@ -102,17 +122,24 @@ public class Action : MonoBehaviour
         int cost = 1;
         if (!isMyTurn) return;
 
-        if (skills.Damage > 0)
+        if (currentZone == skills.condition)
+        {
+           if(skills.Effets != "None")
+            {
+                enemyScript.status = skills.Effets;
+            }
+            if(skills.Critique == true)
+            {
+                skills.Damage = skills.Damage * Herostat.Critique;
+                enemyScript.TakeDamage(skills.Damage);
+            }
+        }
+
+        else
         {
             enemyScript.TakeDamage(skills.Damage);
         }
-
-        if (currentZoneIndex == 1 || currentZoneIndex == 3)
-        {
-            enemyScript.status = skills.Effets;
-        }
-
-
+        cantAttack = true;
         actionLeft -= cost;
     }
     public void ObjectAction(int cost = 1)
