@@ -1,17 +1,41 @@
 using UnityEngine;
 
-public class Hero1 : MonoBehaviour
+public class CombatManager : MonoBehaviour
 {
     //private bool fighter = true;
 
     [SerializeField] private string placement = "FighterPosition";
     [SerializeField] private string Zone = "Front";
     [SerializeField] private GameObject player;
+
+    public Action heroAction;
+    public UI_Update_Info ui;
     public GameObject EnemyPrefab;
     public Transform spawnPoint;
     private GameObject CEnemyInstance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+        SpawnHero();        
+        SpawnEnemy();
+    }
+
+    public void SpawnEnemy()
+    {
+
+        //Choper le spawning spécifique du monstre
+        if(CEnemyInstance != null)
+        {
+            Destroy(CEnemyInstance);
+        }
+        if(EnemyPrefab != null)
+        {
+            CEnemyInstance = Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
+            heroAction.SetNewEnemy(CEnemyInstance);
+            ui.SetNewEnemy(CEnemyInstance);
+        }
+    }
+    public void SpawnHero()
     {
         GameObject Position = GameObject.FindGameObjectWithTag(placement);
         GameObject FrontZone = GameObject.FindGameObjectWithTag(Zone);
@@ -43,23 +67,6 @@ public class Hero1 : MonoBehaviour
         else
         {
             Debug.LogError("Rien connard");
-        }
-        
-        SpawnEnemy();
-    }
-
-    public void SpawnEnemy()
-    {
-
-        //Choper le spawning spécifique du monstre
-        if(CEnemyInstance != null)
-        {
-            Destroy(CEnemyInstance);
-        }
-        if(EnemyPrefab != null)
-        {
-            CEnemyInstance = Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
-            CEnemyInstance.name = EnemyPrefab.name;
         }
     }
 }

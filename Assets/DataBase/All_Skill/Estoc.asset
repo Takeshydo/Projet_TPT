@@ -15,8 +15,8 @@ MonoBehaviour:
   SkillName: Estoc
   Icon: {fileID: 0}
   Damage: 20
-  Critique: 1.25
-  Condition: Back
+  Critique: 1
+  condition: 0
   Effets: None
   Description: "Attaque d'estoc / Bonus par derri\xE8re"
   IsActive: 1

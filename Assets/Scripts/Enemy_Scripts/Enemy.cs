@@ -7,17 +7,16 @@ public class Enemy : MonoBehaviour
     public string EnemyName = "Enemy1";
     public int EnemyLvl = 5;
     public float EnemyHP = 500.0f;
-    public float CEnemyHP;
+    [SerializeField] private float CEnemyHP;
     public float Damage = 15.0f;
     public float Defense = 5.0f;
     public string status = "None";
-
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         CEnemyHP = EnemyHP;
+        status = "None";
+        Debug.Log($"Ennemi instancié. HP réinitialisés à {CEnemyHP}");
+        
     }
 
     // Update is called once per frame
@@ -28,7 +27,11 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        CEnemyHP = EnemyHP - amount;
-        Debug.Log("enemy HP "+ CEnemyHP +"");
+        float reductionratio = Defense /100; // Passage defense en % 
+        reductionratio = Mathf.Min(reductionratio, 1.0f); //Verif du ration < 100%
+        float DamageTaken = amount * (1f - reductionratio); //Dégat avec ratio def
+        DamageTaken = Mathf.Max(DamageTaken, 0f); //Verif du ration > 0
+        CEnemyHP -= DamageTaken;
+        Debug.Log("Enemy HP"+ CEnemyHP +"");
     }
 }

@@ -264,6 +264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97767d7002e4c0c4d9efd997857f5258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  EnemyName: Enemy1
+  EnemyLvl: 5
   EnemyHP: 500
+  CEnemyHP: 500
   Damage: 15
   Defense: 5
+  status: None

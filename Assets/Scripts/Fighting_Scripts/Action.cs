@@ -30,13 +30,13 @@ public class Action : MonoBehaviour
 
     void Start()
     {
-        if (enemy != null)
-        {
-            enemyScript = enemy.GetComponent<Enemy>();
-        }
         if (player != null)
         {
             Herostat = player.GetComponent<Hero>();
+        }
+        if(enemy != null)
+        {
+            SetNewEnemy(enemy);
         }
         // Récupère les positions des zones
         foreach (string zoneTag in zoneOrder)
@@ -120,6 +120,7 @@ public class Action : MonoBehaviour
     public void AttackAction(Skills_Structure skills)
     {
         int cost = 1;
+        float finalDamage = skills.Damage;
         if (!isMyTurn) return;
 
         if (currentZone == skills.condition)
@@ -130,14 +131,13 @@ public class Action : MonoBehaviour
             }
             if(skills.Critique == true)
             {
-                skills.Damage = skills.Damage * Herostat.Critique;
-                enemyScript.TakeDamage(skills.Damage);
+                finalDamage *= Herostat.Critique;
+                enemyScript.TakeDamage(finalDamage);
             }
         }
-
-        else
+        else 
         {
-            enemyScript.TakeDamage(skills.Damage);
+            enemyScript.TakeDamage(finalDamage);
         }
         cantAttack = true;
         actionLeft -= cost;
@@ -192,6 +192,15 @@ public class Action : MonoBehaviour
         {
             currentZone = ZoneArea.TagToZoneType(other.tag);
             Debug.Log($"Entré dans zone : {other.tag} => {currentZone}");
+        }
+    }
+
+    public void SetNewEnemy(GameObject NewEnemyInstance)
+    {
+        enemy=NewEnemyInstance;
+        if(enemy != null)
+        {
+            enemyScript = enemy.GetComponent<Enemy>();
         }
     }
 

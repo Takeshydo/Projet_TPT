@@ -26,6 +26,7 @@ public class UI_Update_Info : MonoBehaviour
 
     public GameObject hero;
     public GameObject enemy;
+    private Enemy enemyScript;
     public Action HeroAction;
     public SkillButtonGenerator skillBG;
     public CanvasGroup ActionUI;
@@ -51,12 +52,13 @@ public class UI_Update_Info : MonoBehaviour
         {
             hero = GameObject.FindGameObjectWithTag("Player");
         }
-        if (enemy == null)
-        {
-            enemy = GameObject.FindGameObjectWithTag("Enemy");
-        }
+
         HeroAction = hero.GetComponent<Action>();
         skillBG = AttackUI.GetComponent<SkillButtonGenerator>();
+        if (skillBG != null)
+        {
+            skillBG.HeroAction = HeroAction;
+        }
         UpdateCharacterUI();
         HPXPUI();
         MoveUIChange();
@@ -65,7 +67,7 @@ public class UI_Update_Info : MonoBehaviour
     void Update()
     {
         HPXPUI();
-        ButtonKeyInput();
+        ButtonKeyInput(); 
     }
 
     public void UpdateCharacterUI()
@@ -107,7 +109,7 @@ public class UI_Update_Info : MonoBehaviour
             ActionUIFade();
             if (!SkillGen)
             {
-                skillBG.GenerateSkillButtons();
+                skillBG.GenerateSkillButtons(); 
                 SkillGen = true;
             }
             return;
@@ -264,5 +266,12 @@ public class UI_Update_Info : MonoBehaviour
 
         Skills_Structure skill = HeroAction.equippedSkills[index];
         HeroAction.AttackAction(skill);
+    }
+
+    public void SetNewEnemy(GameObject NewEnemyInstance)
+    {
+        enemy = NewEnemyInstance;
+        enemyScript = enemy.GetComponent<Enemy>();
+        UpdateCharacterUI();
     }
 }

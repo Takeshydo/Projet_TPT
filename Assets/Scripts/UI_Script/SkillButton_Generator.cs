@@ -7,28 +7,25 @@ public class SkillButtonGenerator : MonoBehaviour
     public GameObject buttonPrefab;   // Prefab du bouton
     public Transform buttonParent;    // Conteneur des boutons
     public Skille_Table skillTable;   // La database
-    public Action HeroAction; //les Actions
+    [HideInInspector] public Action HeroAction; //les Actions
 
     // Touche à afficher par ordre de génération
-    private readonly string[] buttonKeys = { "&", "é", "\"" };
+    private readonly string[] buttonKeys = { "1", "2", "3" };
 
     public void GenerateSkillButtons()
     {
-
-        void Start()
-        {
-            HeroAction = Action.GetComponent<Action>();
-        }
         // Supprimer les anciens boutons
         foreach (Transform child in buttonParent)
             Destroy(child.gameObject);
 
+  
         if (skillTable == null || skillTable.Skills == null)
         {
             Debug.LogWarning("SkillTable est vide ou non assignée !");
             return;
         }
-
+    
+        HeroAction.equippedSkills.Clear();
         int keyIndex = 0; // index pour les touches
 
         // Générer un bouton par skill actif, max 3
@@ -45,7 +42,7 @@ public class SkillButtonGenerator : MonoBehaviour
             TMP_Text txt = newButton.GetComponentInChildren<TMP_Text>();
             if (txt != null){
                 txt.text = $"{buttonKeys[keyIndex]} - {skill.SkillName}";
-                HeroAction.equippedSkills.Add(skill);
+                HeroAction.equippedSkills.Add(skill); // PROBLEM
             }
             Button btn = newButton.GetComponent<Button>();
             Skills_Structure capturedSkill = skill;

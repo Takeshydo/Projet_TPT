@@ -15,8 +15,8 @@ MonoBehaviour:
   SkillName: Slash
   Icon: {fileID: 0}
   Damage: 15
-  Critique: 1.25
-  Condition: None
+  Critique: 0
+  condition: 0
   Effets: None
   Description: Attaque tranchante de la lame
   IsActive: 1
