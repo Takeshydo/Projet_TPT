@@ -32,6 +32,6 @@ public class Enemy : MonoBehaviour
         float DamageTaken = amount * (1f - reductionratio); //Dégat avec ratio def
         DamageTaken = Mathf.Max(DamageTaken, 0f); //Verif du ration > 0
         CEnemyHP -= DamageTaken;
-        Debug.Log("Enemy HP"+ CEnemyHP +"");
+        Debug.Log("Enemy HP"+ CEnemyHP+"");
     }
 }

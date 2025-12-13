@@ -6,13 +6,15 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] private string placement = "FighterPosition";
     [SerializeField] private string Zone = "Front";
-    [SerializeField] private GameObject player;
 
     public Action heroAction;
+    public CameraFigthing cam;
     public UI_Update_Info ui;
     public GameObject EnemyPrefab;
+    public GameObject PlayerPrefab;
     public Transform spawnPoint;
     private GameObject CEnemyInstance;
+    private GameObject CPlayerInstance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,6 +35,7 @@ public class CombatManager : MonoBehaviour
             CEnemyInstance = Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
             heroAction.SetNewEnemy(CEnemyInstance);
             ui.SetNewEnemy(CEnemyInstance);
+            cam.SetNewEnemy(CEnemyInstance);
         }
     }
     public void SpawnHero()
@@ -57,7 +60,8 @@ public class CombatManager : MonoBehaviour
                 BoxCollider box = spawnPosition.GetComponent<BoxCollider>();
                 Vector3 spawnPos = box.bounds.center;
 
-                Instantiate(player, spawnPos, Quaternion.identity);
+                CPlayerInstance=Instantiate(PlayerPrefab, spawnPos, Quaternion.identity);
+                cam.SetNewHero(CPlayerInstance);
             }
             else
             {

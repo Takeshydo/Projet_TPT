@@ -3,22 +3,37 @@ using UnityEngine;
 
 public class CameraFigthing : MonoBehaviour
 {
-    public Transform Player;
-    public Transform Enemy;
-    public Vector3 offset = new Vector3(0f, 2f, -4f);
-
+    public GameObject Enemy;
+    public GameObject Player;
+    public Transform PlayerT;
+    public Transform EnemyT;
+    public float height = 2f;
+    public float distance = 5f;
+    public float smoothSpeed = 5f;
 
     void LateUpdate()
     {
-        if (Player == null && Enemy == null)
-        {
-            GameObject p = GameObject.FindGameObjectWithTag("Player");
-            if (p != null) { Player = p.transform; }
-            GameObject e = GameObject.FindGameObjectWithTag("Enemy");
-            if (e != null) { Enemy = e.transform; }
-        }
+        if(!PlayerT || !EnemyT)return;
+        Vector3 FightDirection = (EnemyT.position - PlayerT.position).normalized;
 
-        transform.position = Player.position + Player.rotation * offset;
-        transform.LookAt(Enemy.position);
+        Vector3 desiredPosition=PlayerT.position - FightDirection * distance + Vector3.up * height;
+
+        transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * smoothSpeed);
+
+        Vector3 LookTarget= PlayerT.position +FightDirection * 2f;
+        transform.LookAt(LookTarget);
+
     }
+
+    public void SetNewEnemy(GameObject NewEnemyInstance)
+    {
+        Enemy=NewEnemyInstance;
+        EnemyT=NewEnemyInstance.transform;
+    }
+    public void SetNewHero(GameObject NewHeroInstance)
+    {
+        Player=NewHeroInstance;
+        PlayerT=NewHeroInstance.transform;
+    }
+
 }
