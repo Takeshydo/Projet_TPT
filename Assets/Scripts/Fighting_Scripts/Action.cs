@@ -25,19 +25,12 @@ public class Action : MonoBehaviour
     public bool cantMove = false;
     public bool cantAttack =false;
     public bool isMyTurn = false;
+    private bool zoneReady = false;
 
     public List<Skills_Structure> equippedSkills = new List<Skills_Structure>();
 
     void Start()
     {
-        if (player != null)
-        {
-            Herostat = player.GetComponent<Hero>();
-        }
-        if(enemy != null)
-        {
-            SetNewEnemy(enemy);
-        }
         // Récupère les positions des zones
         foreach (string zoneTag in zoneOrder)
         {
@@ -58,9 +51,7 @@ public class Action : MonoBehaviour
 
         //Set UP action
         StartTurn();
-
-        // Place le joueur en "Front"
-        MovePlayerTo(zoneOrder[currentZoneIndex]);
+        zoneReady = true;
     }
 
     void Update()
@@ -122,6 +113,7 @@ public class Action : MonoBehaviour
         int cost = 1;
         float finalDamage = skills.Damage;
         if (!isMyTurn) return;
+        if (enemyScript == null || Herostat == null) Debug.Log("Un des scripts est null");
 
         if (currentZone == skills.condition)
         {
@@ -202,6 +194,25 @@ public class Action : MonoBehaviour
         {
             enemyScript = enemy.GetComponent<Enemy>();
         }
+    }
+    public void SetNewHero(GameObject NewHeroInstance)
+    {
+        player=NewHeroInstance;
+        if(player != null)
+        {
+            Herostat= player.GetComponent<Hero>();
+            TryToPlace();
+        } 
+        else
+        {
+            Debug.Log("Player est null");
+        }      
+    }
+
+    public void TryToPlace()
+    {
+        if(!zoneReady || player == null)return;
+        MovePlayerTo(zoneOrder[currentZoneIndex]);
     }
 
 }

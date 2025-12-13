@@ -7,7 +7,6 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private string placement = "FighterPosition";
     [SerializeField] private string Zone = "Front";
 
-    public Action heroAction;
     public CameraFigthing cam;
     public UI_Update_Info ui;
     public GameObject EnemyPrefab;
@@ -18,13 +17,13 @@ public class CombatManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SpawnHero();        
         SpawnEnemy();
+        SpawnHero();        
     }
 
     public void SpawnEnemy()
     {
-
+       
         //Choper le spawning spécifique du monstre
         if(CEnemyInstance != null)
         {
@@ -33,7 +32,6 @@ public class CombatManager : MonoBehaviour
         if(EnemyPrefab != null)
         {
             CEnemyInstance = Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
-            heroAction.SetNewEnemy(CEnemyInstance);
             ui.SetNewEnemy(CEnemyInstance);
             cam.SetNewEnemy(CEnemyInstance);
         }
@@ -61,7 +59,14 @@ public class CombatManager : MonoBehaviour
                 Vector3 spawnPos = box.bounds.center;
 
                 CPlayerInstance=Instantiate(PlayerPrefab, spawnPos, Quaternion.identity);
+                var playerAction = CPlayerInstance.GetComponent<Action>();
                 cam.SetNewHero(CPlayerInstance);
+                playerAction.SetNewHero(CPlayerInstance);
+                if(CEnemyInstance != null)
+                {
+                    playerAction.SetNewEnemy(CEnemyInstance);
+                }
+                
             }
             else
             {

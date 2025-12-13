@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Action
   player: {fileID: 1737597223390585619}
-  enemy: {fileID: 3106388083754359187, guid: edd61043c9e57d94b9b7e4cb0f32af59, type: 3}
+  enemy: {fileID: 0}
   zoneOrder:
   - Front
   - Right
@@ -140,7 +140,9 @@ MonoBehaviour:
   actuelAction: 2
   actionLeft: 0
   cantMove: 0
+  cantAttack: 0
   isMyTurn: 0
+  equippedSkills: []
 --- !u!114 &-7756158408608734470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,6 +163,7 @@ MonoBehaviour:
   currentXP: 0
   Force: 15
   Defense: 5
+  Critique: 1.05
 --- !u!54 &-6226560796705487853
 Rigidbody:
   m_ObjectHideFlags: 0
