@@ -1,8 +1,6 @@
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class Boss_Detection : MonoBehaviour
+public class Boss_Detect_Back : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,10 +17,13 @@ public class Boss_Detection : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
-          SceneManager.LoadScene("Arena");
+            {
+            Debug.Log("Jte prend par deriere");
+
+                if (GameManagement.Instance != null)
+            {
+                GameManagement.Instance.enteredFromBack = true;
+            }
         }
     }
-
-
 }
