@@ -3,26 +3,24 @@ using UnityEngine.SceneManagement;
 
 public class Boss_Detection : MonoBehaviour
 {
+  // Start is called once before the first execution of Update after the MonoBehaviour is created
+  void Start()
+  {
 
-    private bool OntheBack = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+  }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  // Update is called once per frame
+  void Update()
+  {
 
-    private void OnTriggerEnter(Collider other)
+  }
+
+  private void OnTriggerEnter(Collider other)
+  {
+    if (other.CompareTag("Player"))
     {
-        if (other.CompareTag("Player"))
-        {
-          SceneManager.LoadScene("Arena");
-        }
+      SceneManager.LoadScene("Arena");
     }
+  }
 
 }

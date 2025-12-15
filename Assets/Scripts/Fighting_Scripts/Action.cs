@@ -23,8 +23,9 @@ public class Action : MonoBehaviour
     public int actuelAction = 2;
     public int actionLeft;
     public bool cantMove = false;
-    public bool cantAttack =false;
-    public bool isMyTurn = false;
+    public bool cantAttack = false;
+    public bool cantObject = false;
+    public bool IsTurnFinished => actionLeft <= 0;
     private bool zoneReady = false;
 
     public List<Skills_Structure> equippedSkills = new List<Skills_Structure>();
@@ -48,9 +49,6 @@ public class Action : MonoBehaviour
                 Debug.LogWarning($"Zone introuvable : {zoneTag}");
             }
         }
-
-        //Set UP action
-        StartTurn();
         zoneReady = true;
     }
 
@@ -88,54 +86,49 @@ public class Action : MonoBehaviour
             Debug.LogError($"Position introuvable pour la zone {zoneTag}");
         }
     }
-    void StartTurn()
+    public void StartTurn()
     {
         actionLeft = PA * actuelAction;
-        isMyTurn = true;
         cantMove = false;
         cantAttack = false;
+        cantObject = false;
     }
 
-    void EndofTurn()
+    public void EndTurn()
     {
-        if(actionLeft == 0)
+        if (actionLeft == 0)
         {
             Debug.Log("Fin du tour");
-            isMyTurn =false;
         }
 
         //Script System TPT
-        
+
     }
 
     public void AttackAction(Skills_Structure skills)
     {
         int cost = 1;
         float finalDamage = skills.Damage;
-        if (!isMyTurn) return;
+
         if (enemyScript == null || Herostat == null) Debug.Log("Un des scripts est null");
 
         if (currentZone == skills.condition)
         {
-           if(skills.Effets != "None")
+            if (skills.Effets != "None")
             {
                 enemyScript.status = skills.Effets;
             }
-            if(skills.Critique == true)
+            if (skills.Critique == true)
             {
                 finalDamage *= Herostat.Critique;
-                enemyScript.TakeDamage(finalDamage);
             }
         }
-        else 
-        {
-            enemyScript.TakeDamage(finalDamage);
-        }
-        cantAttack = true;
+        enemyScript.TakeDamage(finalDamage);
         actionLeft -= cost;
     }
     public void ObjectAction(int cost = 1)
     {
+        Debug.Log("Object utilisé");
         //Script inventaire pour object
         actionLeft -= cost;
     }
@@ -145,7 +138,6 @@ public class Action : MonoBehaviour
         if (!cantMove)
         {
             MoveClockwise();
-            cantMove = true;
             actionLeft -= cost;
         }
         return;
@@ -156,7 +148,6 @@ public class Action : MonoBehaviour
         if (!cantMove)
         {
             MoveCounterClockwise();
-            cantMove = true;
             actionLeft -= cost;
         }
         return;
@@ -189,29 +180,29 @@ public class Action : MonoBehaviour
 
     public void SetNewEnemy(GameObject NewEnemyInstance)
     {
-        enemy=NewEnemyInstance;
-        if(enemy != null)
+        enemy = NewEnemyInstance;
+        if (enemy != null)
         {
             enemyScript = enemy.GetComponent<Enemy>();
         }
     }
     public void SetNewHero(GameObject NewHeroInstance)
     {
-        player=NewHeroInstance;
-        if(player != null)
+        player = NewHeroInstance;
+        if (player != null)
         {
-            Herostat= player.GetComponent<Hero>();
+            Herostat = player.GetComponent<Hero>();
             TryToPlace();
-        } 
+        }
         else
         {
             Debug.Log("Player est null");
-        }      
+        }
     }
 
     public void TryToPlace()
     {
-        if(!zoneReady || player == null)return;
+        if (!zoneReady || player == null) return;
         MovePlayerTo(zoneOrder[currentZoneIndex]);
     }
 

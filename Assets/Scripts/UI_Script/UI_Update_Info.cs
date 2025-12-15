@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class UI_Update_Info : MonoBehaviour
 {
@@ -41,8 +42,6 @@ public class UI_Update_Info : MonoBehaviour
     private bool A_Move = false;
     private bool A_ActionM = true;
     private bool SkillGen = false;
-    private bool hasMoved = false;
-    private bool hasAttack = false;
 
     private bool canProcessInput = true;
 
@@ -67,7 +66,7 @@ public class UI_Update_Info : MonoBehaviour
     void Update()
     {
         HPXPUI();
-        ButtonKeyInput(); 
+        ButtonKeyInput();
     }
 
     public void UpdateCharacterUI()
@@ -97,8 +96,9 @@ public class UI_Update_Info : MonoBehaviour
     public void ButtonKeyInput()
     {
         if (!canProcessInput) return;
+        var actionLeft = HeroAction.actionLeft;
 
-        if (Keyboard.current.digit1Key.wasPressedThisFrame && A_ActionM && canProcessInput && !hasAttack)
+        if (Keyboard.current.digit1Key.wasPressedThisFrame && A_ActionM && canProcessInput && actionLeft > 0)
         {
             canProcessInput = false;
             StartCoroutine(InputDelay(0.2f));
@@ -109,18 +109,18 @@ public class UI_Update_Info : MonoBehaviour
             ActionUIFade();
             if (!SkillGen)
             {
-                skillBG.GenerateSkillButtons(); 
+                skillBG.GenerateSkillButtons();
                 SkillGen = true;
             }
             return;
         }
-        if (Keyboard.current.digit2Key.wasPressedThisFrame && !hasMoved && A_ActionM)
+        if (Keyboard.current.digit2Key.wasPressedThisFrame && A_ActionM && actionLeft > 0)
         {
             MoveButton.onClick.Invoke();
             A_Move = true;
             ActionUIFade();
         }
-        if (Keyboard.current.digit3Key.wasPressedThisFrame && A_ActionM)
+        if (Keyboard.current.digit3Key.wasPressedThisFrame && A_ActionM && actionLeft > 0)
         {
             ObjectButton.onClick.Invoke();
             A_Object = true;
@@ -134,14 +134,12 @@ public class UI_Update_Info : MonoBehaviour
                 HeroAction.MoveRight();
                 MoveUIChange();
                 ActionMenu();
-                hasMoved = true;
             }
             if (Keyboard.current.aKey.wasPressedThisFrame)
             {
                 HeroAction.MoveLeft();
                 MoveUIChange();
                 ActionMenu();
-                hasMoved = true;
             }
         }
         if (A_Attack)
@@ -150,20 +148,25 @@ public class UI_Update_Info : MonoBehaviour
             {
                 TriggerSkillByIndex(0);
                 ActionMenu();
-                hasAttack = true;
+
             }
             if (Keyboard.current.digit2Key.wasPressedThisFrame)
             {
                 TriggerSkillByIndex(1);
                 ActionMenu();
-                hasAttack = true;
+
             }
             if (Keyboard.current.digit3Key.wasPressedThisFrame)
             {
                 TriggerSkillByIndex(2);
                 ActionMenu();
-                hasAttack = true;
+
             }
+        }
+        if (A_Object)
+        {
+            HeroAction.ObjectAction();
+            ActionMenu();
         }
 
 
@@ -258,7 +261,7 @@ public class UI_Update_Info : MonoBehaviour
         yield return new WaitForSeconds(delay);
         canProcessInput = true;
     }
-    
+
     void TriggerSkillByIndex(int index)
     {
         if (HeroAction.equippedSkills == null) return;

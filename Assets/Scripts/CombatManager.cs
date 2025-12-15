@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class CombatManager : MonoBehaviour
 {
@@ -14,24 +15,41 @@ public class CombatManager : MonoBehaviour
     public Transform spawnPoint;
     private GameObject CEnemyInstance;
     private GameObject CPlayerInstance;
+    public CombatState currentState;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         SpawnEnemy();
-        SpawnHero();        
+        SpawnHero();
+        WhoStart();
+    }
+
+    void Update()
+    {
+        if (currentState == CombatState.PlayerTurn)
+        {
+            var action = CPlayerInstance.GetComponent<Action>();
+            if (action.IsTurnFinished)
+            {
+                EnemyTurn();
+            }
+        }
     }
 
     public void SpawnEnemy()
     {
-       
+
         //Choper le spawning spécifique du monstre
-        if(CEnemyInstance != null)
+        if (CEnemyInstance != null)
         {
             Destroy(CEnemyInstance);
         }
-        if(EnemyPrefab != null)
+        if (EnemyPrefab != null)
         {
             CEnemyInstance = Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
+            Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
+            enemy.OnDeath += HandleEnemyDeath;
+
             ui.SetNewEnemy(CEnemyInstance);
             cam.SetNewEnemy(CEnemyInstance);
         }
@@ -58,15 +76,15 @@ public class CombatManager : MonoBehaviour
                 BoxCollider box = spawnPosition.GetComponent<BoxCollider>();
                 Vector3 spawnPos = box.bounds.center;
 
-                CPlayerInstance=Instantiate(PlayerPrefab, spawnPos, Quaternion.identity);
+                CPlayerInstance = Instantiate(PlayerPrefab, spawnPos, Quaternion.identity);
                 var playerAction = CPlayerInstance.GetComponent<Action>();
                 cam.SetNewHero(CPlayerInstance);
                 playerAction.SetNewHero(CPlayerInstance);
-                if(CEnemyInstance != null)
+                if (CEnemyInstance != null)
                 {
                     playerAction.SetNewEnemy(CEnemyInstance);
                 }
-                
+
             }
             else
             {
@@ -77,5 +95,95 @@ public class CombatManager : MonoBehaviour
         {
             Debug.LogError("Rien connard");
         }
+    }
+
+
+    //System TPT c'est parti !!!
+
+    public enum CombatState
+    {
+        PlayerTurn,
+        EnemyTurn,
+        Busy,
+    }
+
+    public void WhoStart()
+    {
+        var SpeedPlayer = CPlayerInstance.GetComponent<Hero>();
+        var SpeedEnemy = CEnemyInstance.GetComponent<Enemy>();
+
+        if (SpeedEnemy.speed > SpeedPlayer.speed)
+        {
+            EnemyTurn();
+        }
+        if (SpeedEnemy.speed < SpeedPlayer.speed)
+        {
+            PlayerTurn();
+        }
+    }
+
+    void PlayerTurn()
+    {
+        currentState = CombatState.PlayerTurn;
+        var action = CPlayerInstance.GetComponent<Action>();
+        action.StartTurn();
+
+        ui.ActionMenu();
+    }
+
+    void EnemyTurn()
+    {
+        currentState = CombatState.EnemyTurn;
+        Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
+        enemy.StartTurn();
+
+        StartCoroutine(EnemyRoutine(enemy));
+    }
+
+    IEnumerator EnemyRoutine(Enemy enemy)
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (enemy == null || CPlayerInstance == null)
+            yield break;
+
+        // Récupération du Hero
+        Hero hero = CPlayerInstance.GetComponent<Hero>();
+        if (hero == null)
+            yield break;
+
+        // Application des dégâts
+        hero.TakeDamage(enemy.Damage);
+
+        yield return new WaitForSeconds(0.5f);
+
+        PlayerTurn();
+    }
+
+    public void IsDead()
+    {
+
+    }
+
+    void HandleEnemyDeath(Enemy enemy)
+    {
+        Debug.Log("CombatManager : Enemi Vaincu");
+        currentState = CombatState.Busy;
+
+        ui.gameObject.SetActive(false);
+        StartCoroutine(EndCombatRoutine(enemy));
+    }
+
+    IEnumerator EndCombatRoutine(Enemy enemy)
+    {
+        yield return new WaitForSeconds(1f);
+
+        Destroy(enemy.gameObject);
+
+        // XP / Loot / Animation ici
+
+        Debug.Log("Combat terminé");
+
+        // Retour monde / prochain combat
     }
 }
