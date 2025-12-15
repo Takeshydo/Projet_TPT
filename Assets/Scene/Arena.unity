@@ -886,7 +886,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatManager
   placement: FighterPosition
   Zone: Front
-  heroAction: {fileID: -4267028541162904400, guid: 087704e9117ab714aaffb494932d2727, type: 3}
   cam: {fileID: 987720831}
   ui: {fileID: 1764444600}
   EnemyPrefab: {fileID: 3106388083754359187, guid: edd61043c9e57d94b9b7e4cb0f32af59, type: 3}
@@ -2251,7 +2250,9 @@ MonoBehaviour:
   Player: {fileID: 0}
   PlayerT: {fileID: 0}
   EnemyT: {fileID: 0}
-  offset: {x: 0, y: 2, z: -4}
+  height: 2
+  distance: 5
+  smoothSpeed: 5
 --- !u!1 &1008311214
 GameObject:
   m_ObjectHideFlags: 0
@@ -3969,7 +3970,7 @@ RectTransform:
   m_GameObject: {fileID: 1764444598}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.68184, y: 0.68184, z: 0.68184}
+  m_LocalScale: {x: 0.5902348, y: 0.5902348, z: 0.5902348}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1618749160}

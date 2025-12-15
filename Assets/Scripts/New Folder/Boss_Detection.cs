@@ -1,15 +1,9 @@
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Boss_Detection : MonoBehaviour
 {
-  // Start is called once before the first execution of Update after the MonoBehaviour is created
-  void Start()
-  {
-
-  }
-
-  // Update is called once per frame
   void Update()
   {
 
@@ -22,5 +16,6 @@ public class Boss_Detection : MonoBehaviour
       SceneManager.LoadScene("Arena");
     }
   }
+
 
 }
