@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using NUnit.Framework;
+using JetBrains.Annotations;
+using UnityEngine.SceneManagement;
 
 public class CombatManager : MonoBehaviour
 {
@@ -176,16 +178,21 @@ public class CombatManager : MonoBehaviour
 
     public void WhoStart()
     {
-        var SpeedPlayer = CPlayerInstance.GetComponent<Hero>();
-        var SpeedEnemy = CEnemyInstance.GetComponent<Enemy>();
+        if (CPlayerInstance != null && CEnemyInstance != null)
+        {
 
-        if (SpeedEnemy.speed > SpeedPlayer.speed)
-        {
-            EnemyTurn();
-        }
-        if (SpeedEnemy.speed < SpeedPlayer.speed)
-        {
-            PlayerTurn();
+            var SpeedPlayer = CPlayerInstance.GetComponent<Hero>();
+            var SpeedEnemy = CEnemyInstance.GetComponent<Enemy>();
+
+            if (SpeedEnemy.speed > SpeedPlayer.speed)
+            {
+                EnemyTurn();
+            }
+            if (SpeedEnemy.speed < SpeedPlayer.speed)
+            {
+                PlayerTurn();
+
+            }
         }
     }
 
@@ -216,7 +223,7 @@ public class CombatManager : MonoBehaviour
         Debug.Log("CombatManager : Enemi Vaincu");
         currentState = CombatState.Busy;
 
-        ui.gameObject.SetActive(false);
+        //ui.gameObject.SetActive(false);*/
         StartCoroutine(EndCombatRoutine(enemy));
     }
 
@@ -224,13 +231,17 @@ public class CombatManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
+        var hero = CPlayerInstance.GetComponent<Hero>();
+        hero.currentXP += enemy.EnemyXP;
+        hero.LevelUp();
+        Debug.Log("XP " + hero.currentXP + " ");
+
         Destroy(enemy.gameObject);
-
-        // XP / Loot / Animation ici
-
         Debug.Log("Combat terminé");
 
-        // Retour monde / prochain combat
+
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene("Foret_1");
     }
 
     IEnumerator EnemyRoutine(Enemy enemy)

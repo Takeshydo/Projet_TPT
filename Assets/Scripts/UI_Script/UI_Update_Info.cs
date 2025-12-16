@@ -54,10 +54,14 @@ public class UI_Update_Info : MonoBehaviour
 
         HeroAction = hero.GetComponent<Action>();
         skillBG = AttackUI.GetComponent<SkillButtonGenerator>();
+
         if (skillBG != null)
         {
             skillBG.HeroAction = HeroAction;
         }
+
+        xpbar.size = 0f;
+
         UpdateCharacterUI();
         HPXPUI();
         MoveUIChange();

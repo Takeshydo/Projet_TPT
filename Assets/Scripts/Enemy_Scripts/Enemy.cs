@@ -9,7 +9,8 @@ public class Enemy : MonoBehaviour
     //Var Donnée du Monstre
     public string EnemyName = "Enemy1";
     public int EnemyLvl = 5;
-    public float EnemyHP = 500.0f;
+    public float EnemyHP = 10.0f;
+    public float EnemyXP = 20f;
     [SerializeField] private float CEnemyHP;
     public float Damage = 5.0f;
     public float Defense = 5.0f;

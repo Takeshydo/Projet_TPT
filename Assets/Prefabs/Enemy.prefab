@@ -266,11 +266,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   EnemyName: Enemy1
   EnemyLvl: 5
-  EnemyHP: 500
+  EnemyHP: 10
   CEnemyHP: 500
   Damage: 15
   Defense: 5
   status: None
   speed: 5
+<<<<<<< HEAD
   heroAction: {fileID: 0}
   wolf_Skill: {fileID: 11400000, guid: f01440ea7516fa54a851abf029b0e735, type: 2}
+=======
+>>>>>>> dfc52552efdc48f8f00415d57c4ddeeb2e04f1f0
