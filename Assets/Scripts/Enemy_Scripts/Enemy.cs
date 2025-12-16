@@ -1,5 +1,8 @@
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
+
 
 public class Enemy : MonoBehaviour
 {
@@ -14,12 +17,19 @@ public class Enemy : MonoBehaviour
     public float speed = 5f;
 
     public event System.Action<Enemy> OnDeath;
+    public Action heroAction;
+    private CombatManager combatManager;
+    [SerializeField] private Wolf_Skill_Table wolf_Skill;
 
     private bool EnemyIsDead => CEnemyHP <= 0;
+    public bool hasFinished { get; private set; }
     void Start()
     {
         CEnemyHP = EnemyHP;
         status = "None";
+
+        combatManager = FindFirstObjectByType<CombatManager>();
+
     }
 
     // Update is called once per frame
@@ -45,12 +55,76 @@ public class Enemy : MonoBehaviour
 
     public void StartTurn()
     {
-        Debug.Log("Début du tour de l'enemie");
+        hasFinished = false;
+        Attack();
     }
 
     void Die()
     {
         Debug.Log("Enemie est mort");
         OnDeath?.Invoke(this);
+    }
+
+    void Attack()
+    {
+        if (heroAction == null) return;
+        ZoneArea.ZoneType heroZone = ZoneArea.TagToZoneType(heroAction.GetCurrentZone());
+        var possibleAttack = wolf_Skill.Skills
+            .Where(a => a.validZones.Contains(heroZone))
+            .ToList();
+
+        if (possibleAttack.Count == 0)
+        {
+            Debug.Log("Aucune Attaque possible");
+            EndTurn();
+            return;
+        }
+
+        Wolf_Skill chosenSkill = ChoosedAttack(possibleAttack);
+        ExecuteAttack(chosenSkill);
+    }
+
+    Wolf_Skill ChoosedAttack(List<Wolf_Skill> attacks)
+    {
+        float Totalweight = attacks.Sum(a => a.Proba);
+        float roll = Random.value * Totalweight;
+
+        float current = 0;
+        foreach (var attack in attacks)
+        {
+            Debug.Log($"Skill {attack.AttackName}, validZones: {string.Join(", ", attack.validZones)}");
+            current += attack.Proba;
+            if (roll <= current)
+            {
+                return attack;
+            }
+        }
+        return attacks[0];
+    }
+
+    void ExecuteAttack(Wolf_Skill attack)
+    {
+        Debug.Log($"L'ennemi utilise {attack.AttackName}");
+
+        Hero hero = heroAction.GetComponent<Hero>();
+        hero.TakeDamage(attack.Damage);
+
+        EndTurn();
+    }
+
+    void EndTurn()
+    {
+        if (combatManager == null)
+        {
+            Debug.LogError("CombatManager introuvable");
+            return;
+        }
+        hasFinished = true;
+        combatManager.PlayerTurn();
+    }
+
+    public void SetNewHero(Action hero)
+    {
+        heroAction = hero;
     }
 }

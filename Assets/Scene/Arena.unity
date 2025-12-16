@@ -886,11 +886,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatManager
   placement: FighterPosition
   Zone: Front
+  ZoneB: Back
   cam: {fileID: 987720831}
   ui: {fileID: 1764444600}
   EnemyPrefab: {fileID: 3106388083754359187, guid: edd61043c9e57d94b9b7e4cb0f32af59, type: 3}
   PlayerPrefab: {fileID: 1737597223390585619, guid: 087704e9117ab714aaffb494932d2727, type: 3}
   spawnPoint: {fileID: 1781654844}
+  currentState: 0
 --- !u!4 &495532572
 Transform:
   m_ObjectHideFlags: 0
@@ -3970,7 +3972,7 @@ RectTransform:
   m_GameObject: {fileID: 1764444598}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5902348, y: 0.5902348, z: 0.5902348}
+  m_LocalScale: {x: 0.9759986, y: 0.9759986, z: 0.9759986}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1618749160}

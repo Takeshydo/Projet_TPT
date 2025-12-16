@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using NUnit.Framework;
 
 public class CombatManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class CombatManager : MonoBehaviour
     void Start()
     {
         SpawnEnemy();
-        if (GameManagement.Instance != null)
+        /*if (GameManagement.Instance != null)
         {
 
             if (GameManagement.Instance.enteredFromBack)
@@ -37,8 +38,8 @@ public class CombatManager : MonoBehaviour
         else
         {
             Debug.Log("Frr ta pas creer ton GameManagement clown");
-        }
-
+        }*/
+        SpawnHeroF();
         WhoStart();
     }
 
@@ -69,6 +70,7 @@ public class CombatManager : MonoBehaviour
             Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
             enemy.OnDeath += HandleEnemyDeath;
 
+
             ui.SetNewEnemy(CEnemyInstance);
             cam.SetNewEnemy(CEnemyInstance);
         }
@@ -97,11 +99,13 @@ public class CombatManager : MonoBehaviour
 
                 CPlayerInstance = Instantiate(PlayerPrefab, spawnPos, Quaternion.identity);
                 var playerAction = CPlayerInstance.GetComponent<Action>();
+                var enemy = CEnemyInstance.GetComponent<Enemy>();
                 cam.SetNewHero(CPlayerInstance);
                 playerAction.SetNewHero(CPlayerInstance);
                 if (CEnemyInstance != null)
                 {
                     playerAction.SetNewEnemy(CEnemyInstance);
+                    enemy.SetNewHero(playerAction);
                 }
             }
             else
@@ -139,11 +143,14 @@ public class CombatManager : MonoBehaviour
 
                 CPlayerInstance = Instantiate(PlayerPrefab, spawnPos, Quaternion.identity);
                 var playerAction = CPlayerInstance.GetComponent<Action>();
+                var enemy = CEnemyInstance.GetComponent<Enemy>();
                 cam.SetNewHero(CPlayerInstance);
                 playerAction.SetNewHero(CPlayerInstance);
                 if (CEnemyInstance != null)
                 {
                     playerAction.SetNewEnemy(CEnemyInstance);
+                    enemy.SetNewHero(playerAction);
+
                 }
             }
             else
@@ -182,7 +189,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    void PlayerTurn()
+    public void PlayerTurn()
     {
         currentState = CombatState.PlayerTurn;
         var action = CPlayerInstance.GetComponent<Action>();
@@ -191,33 +198,12 @@ public class CombatManager : MonoBehaviour
         ui.ActionMenu();
     }
 
-    void EnemyTurn()
+    public void EnemyTurn()
     {
         currentState = CombatState.EnemyTurn;
         Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
-        enemy.StartTurn();
-
         StartCoroutine(EnemyRoutine(enemy));
-    }
 
-    IEnumerator EnemyRoutine(Enemy enemy)
-    {
-        yield return new WaitForSeconds(1f);
-
-        if (enemy == null || CPlayerInstance == null)
-            yield break;
-
-        // Récupération du Hero
-        Hero hero = CPlayerInstance.GetComponent<Hero>();
-        if (hero == null)
-            yield break;
-
-        // Application des dégâts
-        hero.TakeDamage(enemy.Damage);
-
-        yield return new WaitForSeconds(0.5f);
-
-        PlayerTurn();
     }
 
     public void IsDead()
@@ -245,5 +231,14 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Combat terminé");
 
         // Retour monde / prochain combat
+    }
+
+    IEnumerator EnemyRoutine(Enemy enemy)
+    {
+        enemy.StartTurn();
+        while (!enemy.hasFinished)
+            yield return null;
+
+        PlayerTurn();
     }
 }

@@ -101,8 +101,6 @@ public class Action : MonoBehaviour
             Debug.Log("Fin du tour");
         }
 
-        //Script System TPT
-
     }
 
     public void AttackAction(Skills_Structure skills)

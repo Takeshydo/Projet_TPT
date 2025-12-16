@@ -271,3 +271,6 @@ MonoBehaviour:
   Damage: 15
   Defense: 5
   status: None
+  speed: 5
+  heroAction: {fileID: 0}
+  wolf_Skill: {fileID: 11400000, guid: f01440ea7516fa54a851abf029b0e735, type: 2}
