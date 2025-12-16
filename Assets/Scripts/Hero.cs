@@ -36,4 +36,13 @@ public class Hero : MonoBehaviour
         DamageTaken = Mathf.Max(DamageTaken, 0f); //Verif du ration > 0
         currentHP -= DamageTaken;
     }
+
+    public void LevelUp()
+    {
+        if(currentXP >= MaxXP)
+        {
+            HeroLevel += 1;
+            MaxHP += 20f;
+        }
+    }
 }

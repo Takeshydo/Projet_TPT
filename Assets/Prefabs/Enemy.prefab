@@ -266,8 +266,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   EnemyName: Enemy1
   EnemyLvl: 5
-  EnemyHP: 500
+  EnemyHP: 10
   CEnemyHP: 500
   Damage: 15
   Defense: 5
   status: None
+  speed: 5
