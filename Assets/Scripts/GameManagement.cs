@@ -17,4 +17,6 @@ public class GameManagement : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
 }

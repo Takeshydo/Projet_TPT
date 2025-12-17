@@ -15,6 +15,7 @@ public class CombatManager : MonoBehaviour
     public CameraFigthing cam;
     public UI_Update_Info ui;
     public GameObject EnemyPrefab;
+    public GameObject Enemy2Prefab;
     public GameObject PlayerPrefab;
     public Transform spawnPoint;
     private GameObject CEnemyInstance;
@@ -24,7 +25,7 @@ public class CombatManager : MonoBehaviour
     void Start()
     {
         SpawnEnemy();
-        /*if (GameManagement.Instance != null)
+        if (GameManagement.Instance != null)
         {
 
             if (GameManagement.Instance.enteredFromBack)
@@ -40,8 +41,8 @@ public class CombatManager : MonoBehaviour
         else
         {
             Debug.Log("Frr ta pas creer ton GameManagement clown");
-        }*/
-        SpawnHeroF();
+        }
+
         WhoStart();
     }
 
