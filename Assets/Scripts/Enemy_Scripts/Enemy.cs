@@ -1,6 +1,7 @@
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 
 
@@ -40,8 +41,13 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void TakeDamage(float amount)
+    public float TakeDamage(float amount, ZoneArea.ZoneType attackZone = ZoneArea.ZoneType.None)
     {
+        if (attackZone == ZoneArea.ZoneType.Flank)
+        {
+            Debug.Log("Attack eviter");
+            return 0f;
+        }
         float reductionratio = Defense / 100; // Passage defense en % 
         reductionratio = Mathf.Min(reductionratio, 1.0f); //Verif du ration < 100%
         float DamageTaken = amount * (1f - reductionratio); //Dégat avec ratio def
@@ -52,12 +58,13 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
+        return DamageTaken;
     }
 
     public void StartTurn()
     {
         hasFinished = false;
-        Attack();
+        StartCoroutine(EnemyTurnDelay());
     }
 
     void Die()
@@ -80,7 +87,6 @@ public class Enemy : MonoBehaviour
             EndTurn();
             return;
         }
-
         Wolf_Skill chosenSkill = ChoosedAttack(possibleAttack);
         ExecuteAttack(chosenSkill);
     }
@@ -109,8 +115,6 @@ public class Enemy : MonoBehaviour
 
         Hero hero = heroAction.GetComponent<Hero>();
         hero.TakeDamage(attack.Damage);
-
-        EndTurn();
     }
 
     void EndTurn()
@@ -127,5 +131,16 @@ public class Enemy : MonoBehaviour
     public void SetNewHero(Action hero)
     {
         heroAction = hero;
+    }
+
+    private IEnumerator EnemyTurnDelay()
+    {
+        yield return new WaitForSeconds(2f);
+
+        Attack();
+
+        yield return new WaitForSeconds(2f);
+
+        EndTurn();
     }
 }
