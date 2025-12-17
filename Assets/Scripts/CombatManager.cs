@@ -198,6 +198,16 @@ public class CombatManager : MonoBehaviour
 
     public void PlayerTurn()
     {
+        if (cam != null)
+        {
+            cam.DefaultMode = CameraFigthing.CameraMode.OnHero;
+        }
+        Transform actionPanel = ui.transform.Find("Action");
+        if (actionPanel != null)
+        {
+            actionPanel.gameObject.SetActive(true);
+        }
+        else { Debug.Log("gameobject Action pas trouvé"); }
         currentState = CombatState.PlayerTurn;
         var action = CPlayerInstance.GetComponent<Action>();
         action.StartTurn();
@@ -207,6 +217,16 @@ public class CombatManager : MonoBehaviour
 
     public void EnemyTurn()
     {
+        if (cam != null)
+        {
+            cam.DefaultMode = CameraFigthing.CameraMode.OnEnemy;
+        }
+        Transform actionPanel = ui.transform.Find("Action");
+        if (actionPanel != null)
+        {
+            actionPanel.gameObject.SetActive(false);
+        }
+        else { Debug.Log("Action pas trouvé"); }
         currentState = CombatState.EnemyTurn;
         Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
         StartCoroutine(EnemyRoutine(enemy));

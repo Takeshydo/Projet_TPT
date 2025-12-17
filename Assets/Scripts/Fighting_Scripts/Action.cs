@@ -13,6 +13,7 @@ public class Action : MonoBehaviour
 
     private Enemy enemyScript;
     private Hero Herostat;
+    public UI_Update_Info ui;
 
     private Dictionary<string, Transform> zonePositions = new Dictionary<string, Transform>();
     private int currentZoneIndex = 0;
@@ -103,10 +104,11 @@ public class Action : MonoBehaviour
 
     }
 
-    public void AttackAction(Skills_Structure skills)
+    public DamageResult AttackAction(Skills_Structure skills)
     {
         int cost = 1;
         float finalDamage = skills.Damage;
+        bool isCrit = false;
 
         if (enemyScript == null || Herostat == null) Debug.Log("Un des scripts est null");
 
@@ -119,10 +121,13 @@ public class Action : MonoBehaviour
             if (skills.Critique == true)
             {
                 finalDamage *= Herostat.Critique;
+                isCrit = true;
             }
         }
-        enemyScript.TakeDamage(finalDamage);
+        float DamageTaken = enemyScript.TakeDamage(finalDamage, currentZone);
         actionLeft -= cost;
+
+        return new DamageResult { damage = DamageTaken, isCrit = isCrit };
     }
     public void ObjectAction(int cost = 1)
     {
@@ -205,4 +210,10 @@ public class Action : MonoBehaviour
     }
 
 }
+public struct DamageResult
+{
+    public float damage;
+    public bool isCrit;
+}
+
 

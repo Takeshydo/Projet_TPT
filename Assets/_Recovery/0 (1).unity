@@ -2391,7 +2391,6 @@ MonoBehaviour:
   height: 2
   distance: 5
   smoothSpeed: 5
-  DefaultMode: 0
 --- !u!1 &1008311214
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class UI_Update_Info : MonoBehaviour
     public TextMeshProUGUI HeroHP;
     public TextMeshProUGUI PlacementNameD;
     public TextMeshProUGUI PlacementNameQ;
+    public TextMeshProUGUI Hitinfo;
 
     public Scrollbar lifebar;
     public Scrollbar xpbar;
@@ -248,11 +249,23 @@ public class UI_Update_Info : MonoBehaviour
 
     }
 
-    /* public void UpdatePlacementName()
-     {
+    public IEnumerator HitMarker(DamageResult result)
+    {
+        int damageR = Mathf.RoundToInt(result.damage);
+        if (damageR > 0)
+        {
+            Hitinfo.text = damageR.ToString();
+            Hitinfo.color = result.isCrit ? Color.red : Color.white;
+        }
+        else
+        {
+            Hitinfo.text = "DODGE";
+        }
+        Hitinfo.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        Hitinfo.gameObject.SetActive(false);
 
-
-     }*/
+    }
 
     public void MoveUIChange()
     {
@@ -272,7 +285,8 @@ public class UI_Update_Info : MonoBehaviour
         if (index >= HeroAction.equippedSkills.Count) return;
 
         Skills_Structure skill = HeroAction.equippedSkills[index];
-        HeroAction.AttackAction(skill);
+        DamageResult result = HeroAction.AttackAction(skill);
+        StartCoroutine(HitMarker(result));
     }
 
     public void SetNewEnemy(GameObject NewEnemyInstance)
