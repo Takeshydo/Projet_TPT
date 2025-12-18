@@ -26,6 +26,7 @@ public class Action : MonoBehaviour
     public bool cantAttack =false;
     public bool isMyTurn = false;
     private bool zoneReady = false;
+    public bool IsDead = false;
 
     public List<Skills_Structure> equippedSkills = new List<Skills_Structure>();
 
@@ -48,9 +49,6 @@ public class Action : MonoBehaviour
                 Debug.LogWarning($"Zone introuvable : {zoneTag}");
             }
         }
-
-        //Set UP action
-        StartTurn();
         zoneReady = true;
     }
 
@@ -62,6 +60,8 @@ public class Action : MonoBehaviour
             lookDir.y = 0;
             player.transform.rotation = Quaternion.LookRotation(lookDir);
         }
+        
+        EndofTurn();
     }
 
     void MoveClockwise()
@@ -88,7 +88,7 @@ public class Action : MonoBehaviour
             Debug.LogError($"Position introuvable pour la zone {zoneTag}");
         }
     }
-    void StartTurn()
+    public void StartTurn()
     {
         actionLeft = PA * actuelAction;
         isMyTurn = true;
@@ -96,16 +96,13 @@ public class Action : MonoBehaviour
         cantAttack = false;
     }
 
-    void EndofTurn()
+    public void EndofTurn()
     {
         if(actionLeft == 0)
         {
             Debug.Log("Fin du tour");
             isMyTurn =false;
         }
-
-        //Script System TPT
-        
     }
 
     public void AttackAction(Skills_Structure skills)
@@ -214,6 +211,13 @@ public class Action : MonoBehaviour
         if(!zoneReady || player == null)return;
         MovePlayerTo(zoneOrder[currentZoneIndex]);
     }
-
+    public void Death()
+    {
+        if(Herostat.currentHP == 0)
+        {
+            IsDead = true; 
+            Debug.Log ("Le Player est mort");
+        }
+    }
 }
 

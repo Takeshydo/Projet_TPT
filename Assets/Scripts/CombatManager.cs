@@ -9,6 +9,7 @@ public class CombatManager : MonoBehaviour
 
     public CameraFigthing cam;
     public UI_Update_Info ui;
+    public TurnBaseManager tbm;
     public GameObject EnemyPrefab;
     public GameObject PlayerPrefab;
     public Transform spawnPoint;
@@ -34,6 +35,7 @@ public class CombatManager : MonoBehaviour
             CEnemyInstance = Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
             ui.SetNewEnemy(CEnemyInstance);
             cam.SetNewEnemy(CEnemyInstance);
+            tbm.SetNewEnemy(CEnemyInstance);
         }
     }
     public void SpawnHero()
@@ -62,6 +64,7 @@ public class CombatManager : MonoBehaviour
                 var playerAction = CPlayerInstance.GetComponent<Action>();
                 cam.SetNewHero(CPlayerInstance);
                 playerAction.SetNewHero(CPlayerInstance);
+                tbm.SetNewHero(CPlayerInstance);
                 if(CEnemyInstance != null)
                 {
                     playerAction.SetNewEnemy(CEnemyInstance);

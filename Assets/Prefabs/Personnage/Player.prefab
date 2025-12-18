@@ -138,10 +138,11 @@ MonoBehaviour:
   positionTag: FighterPosition
   PA: 1
   actuelAction: 2
-  actionLeft: 0
+  actionLeft: 2
   cantMove: 0
   cantAttack: 0
   isMyTurn: 0
+  IsDead: 0
   equippedSkills: []
 --- !u!114 &-7756158408608734470
 MonoBehaviour:
