@@ -81,6 +81,7 @@ public class CombatManager : MonoBehaviour
         if (PrefabsChoice != null)
         {
             CEnemyInstance = Instantiate(PrefabsChoice, spawnPoint.position, spawnPoint.rotation);
+            CEnemyInstance.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f); 
             Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
             enemy.OnDeath += HandleEnemyDeath;
 

@@ -188,6 +188,10 @@ PrefabInstance:
       value: Detector
       objectReference: {fileID: 0}
     - target: {fileID: 7397318724782203538, guid: b84109e020a0f4c45bb0f1c23ff7e548, type: 3}
+      propertyPath: m_Size.x
+      value: 2.3537598
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397318724782203538, guid: b84109e020a0f4c45bb0f1c23ff7e548, type: 3}
       propertyPath: m_Size.y
       value: 18.681858
       objectReference: {fileID: 0}
@@ -196,12 +200,20 @@ PrefabInstance:
       value: 18.38507
       objectReference: {fileID: 0}
     - target: {fileID: 7397318724782203538, guid: b84109e020a0f4c45bb0f1c23ff7e548, type: 3}
+      propertyPath: m_Center.x
+      value: -0.6768799
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397318724782203538, guid: b84109e020a0f4c45bb0f1c23ff7e548, type: 3}
       propertyPath: m_Center.y
       value: -0.21751976
       objectReference: {fileID: 0}
     - target: {fileID: 7397318724782203538, guid: b84109e020a0f4c45bb0f1c23ff7e548, type: 3}
       propertyPath: m_Center.z
       value: -0.374115
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397318724782203538, guid: b84109e020a0f4c45bb0f1c23ff7e548, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

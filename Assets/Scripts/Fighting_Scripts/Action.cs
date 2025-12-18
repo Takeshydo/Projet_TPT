@@ -62,8 +62,6 @@ public class Action : MonoBehaviour
             lookDir.y = 0;
             player.transform.rotation = Quaternion.LookRotation(lookDir);
         }
-        
-        EndTurn();
     }
 
     void MoveClockwise()
@@ -96,15 +94,6 @@ public class Action : MonoBehaviour
         cantMove = false;
         cantAttack = false;
         cantObject = false;
-    }
-
-
-    public void EndTurn()
-    {
-        if (actionLeft == 0)
-        {
-            Debug.Log("Fin du tour");
-        }
     }
 
     public DamageResult AttackAction(Skills_Structure skills)
