@@ -14,9 +14,8 @@ public class CombatManager : MonoBehaviour
 
     public CameraFigthing cam;
     public UI_Update_Info ui;
-    public GameObject EnemyPrefab;
-    public GameObject Enemy2Prefab;
     public GameObject PlayerPrefab;
+    public GameObject PrefabsChoice;
     public Transform spawnPoint;
     private GameObject CEnemyInstance;
     private GameObject CPlayerInstance;
@@ -24,7 +23,17 @@ public class CombatManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (GameManagement.Instance.SelectedPrefabs != null)
+        {
+            PrefabsChoice = GameManagement.Instance.SelectedPrefabs;
+        }
+        else
+        {
+            Debug.Log("Instante null");
+        }
+
         SpawnEnemy();
+
         if (GameManagement.Instance != null)
         {
 
@@ -67,15 +76,20 @@ public class CombatManager : MonoBehaviour
         {
             Destroy(CEnemyInstance);
         }
-        if (EnemyPrefab != null)
+
+        if (GameManagement.Instance.SelectedPrefabs != null)
         {
-            CEnemyInstance = Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
+            CEnemyInstance = Instantiate(PrefabsChoice, spawnPoint.position, spawnPoint.rotation);
             Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
             enemy.OnDeath += HandleEnemyDeath;
 
 
             ui.SetNewEnemy(CEnemyInstance);
             cam.SetNewEnemy(CEnemyInstance);
+        }
+        else
+        {
+            Debug.Log("Prefabs n'est pas bien assigné");
         }
     }
     public void SpawnHeroF()

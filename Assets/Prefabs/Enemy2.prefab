@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23afe54daf39c914f9283b4b5b98df53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss_Detection
+  EnemyPrefabs: {fileID: 7892053807931200886}
 --- !u!1 &2753796031322407102
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,6 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23afe54daf39c914f9283b4b5b98df53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss_Detection
+  EnemyPrefabs: {fileID: 7892053807931200886}
 --- !u!1 &3653746260464832045
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,6 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23afe54daf39c914f9283b4b5b98df53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss_Detection
+  EnemyPrefabs: {fileID: 7892053807931200886}
 --- !u!1 &7892053807931200886
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2988141483147735941}
-  - component: {fileID: 419902817674778378}
+  - component: {fileID: -2405555829738404472}
   m_Layer: 0
   m_Name: Enemy2
   m_TagString: Boss_detect
@@ -474,7 +477,7 @@ Transform:
   - {fileID: 202410563726607973}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &419902817674778378
+--- !u!114 &-2405555829738404472
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -483,11 +486,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7892053807931200886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec8a929bd391f9b4087339d81609d534, type: 3}
+  m_Script: {fileID: 11500000, guid: 97767d7002e4c0c4d9efd997857f5258, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy2
-  EnemyName: Enemy2
-  EnemyLvl: 5
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  EnemyName: Enemy1
+  EnemyLvl: 3
   EnemyHP: 20
   EnemyXP: 30
   CEnemyHP: 0
@@ -496,4 +499,4 @@ MonoBehaviour:
   status: None
   speed: 5
   heroAction: {fileID: 0}
-  pig_Skill: {fileID: 11400000, guid: 7165a661807e15d4e9b4c7db9395e7a0, type: 2}
+  Enemy_Skill: {fileID: 11400000, guid: b5116904875ab964f9602cce80305634, type: 2}

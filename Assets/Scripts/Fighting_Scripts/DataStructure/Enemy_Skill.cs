@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Pig_Skill", menuName = "Scriptable Objects/Pig_Skill")]
-public class Pig_Skill : ScriptableObject
+[CreateAssetMenu(fileName = "Enemy_Skill", menuName = "Scriptable Objects/Enemy_Skill")]
+public class Enemy_Skill : ScriptableObject
 {
     public string AttackName;
     public float Damage;

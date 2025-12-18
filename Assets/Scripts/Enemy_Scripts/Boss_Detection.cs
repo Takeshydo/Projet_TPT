@@ -13,6 +13,8 @@ public class Boss_Detection : MonoBehaviour
   {
     if (other.CompareTag("Player"))
     {
+      Debug.Log("Assign prefab : " + gameObject.name);
+      GameManagement.Instance.SelectedPrefabs = gameObject;
       SceneManager.LoadScene("Arena");
     }
   }

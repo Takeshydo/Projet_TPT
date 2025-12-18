@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b32b9488250cdc54496d1d30f067d97b, type: 3}
-  m_Name: Coup_cul
-  m_EditorClassIdentifier: Assembly-CSharp::Pig_Skill
-  AttackName: Coup_cul
-  Damage: 5
-  validZones: 02000000
+  m_Script: {fileID: 11500000, guid: b226b3c1e25e162439b953a899da2fdd, type: 3}
+  m_Name: Mud
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_Skill
+  AttackName: Mud
+  Damage: 7
+  validZones: 01000000
   Proba: 1
