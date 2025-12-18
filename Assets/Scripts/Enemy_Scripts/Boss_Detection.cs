@@ -3,20 +3,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Boss_Detection : MonoBehaviour
-{
-  void Update()
-  {
-
-  }
+{  
+ public GameObject Prefabs;
 
   private void OnTriggerEnter(Collider other)
   {
-    if (other.CompareTag("Player"))
+    if (!other.CompareTag("Player")) return;
+
+    if (Prefabs.scene.name != null)
     {
-      Debug.Log("Assign prefab : " + gameObject.name);
-      GameManagement.Instance.SelectedPrefabs = gameObject;
-      SceneManager.LoadScene("Arena");
+      Debug.LogError("enemyPrefab doit être un asset !");
+      return;
     }
+
+    GameManagement.Instance.SelectedPrefabs = Prefabs;
+    SceneManager.LoadScene("Arena");
   }
 
 

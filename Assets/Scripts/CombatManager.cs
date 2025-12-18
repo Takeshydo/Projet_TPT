@@ -12,19 +12,19 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private string Zone = "Front";
     [SerializeField] private string ZoneB = "Back";
 
+    public CombatData data;
     public CameraFigthing cam;
     public UI_Update_Info ui;
-    public TurnBaseManager tbm;
-    public GameObject EnemyPrefab;
     public GameObject PlayerPrefab;
     public GameObject PrefabsChoice;
     public Transform spawnPoint;
     private GameObject CEnemyInstance;
     private GameObject CPlayerInstance;
     public CombatState currentState;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    void Awake()
     {
+        
         if (GameManagement.Instance.SelectedPrefabs != null)
         {
             PrefabsChoice = GameManagement.Instance.SelectedPrefabs;
@@ -34,9 +34,12 @@ public class CombatManager : MonoBehaviour
             Debug.Log("Instante null");
         }
 
+    }
+    void Start()
+    {
         SpawnEnemy();
 
-        if (GameManagement.Instance != null)
+        if (PrefabsChoice != null)
         {
 
             if (GameManagement.Instance.enteredFromBack)
@@ -48,10 +51,6 @@ public class CombatManager : MonoBehaviour
                 SpawnHeroF();
 
             }
-        }
-        else
-        {
-            Debug.Log("Frr ta pas creer ton GameManagement clown");
         }
 
         WhoStart();
@@ -79,7 +78,7 @@ public class CombatManager : MonoBehaviour
             Destroy(CEnemyInstance);
         }
 
-        if (GameManagement.Instance.SelectedPrefabs != null)
+        if (PrefabsChoice != null)
         {
             CEnemyInstance = Instantiate(PrefabsChoice, spawnPoint.position, spawnPoint.rotation);
             Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
@@ -88,7 +87,6 @@ public class CombatManager : MonoBehaviour
 
             ui.SetNewEnemy(CEnemyInstance);
             cam.SetNewEnemy(CEnemyInstance);
-            tbm.SetNewEnemy(CEnemyInstance);
         }
         else
         {
