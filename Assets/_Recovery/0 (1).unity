@@ -865,7 +865,6 @@ GameObject:
   m_Component:
   - component: {fileID: 495532572}
   - component: {fileID: 495532571}
-  - component: {fileID: 495532573}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -890,7 +889,6 @@ MonoBehaviour:
   ZoneB: Back
   cam: {fileID: 987720831}
   ui: {fileID: 1764444600}
-  tbm: {fileID: 495532573}
   EnemyPrefab: {fileID: 3106388083754359187, guid: edd61043c9e57d94b9b7e4cb0f32af59, type: 3}
   PlayerPrefab: {fileID: 1737597223390585619, guid: 087704e9117ab714aaffb494932d2727, type: 3}
   spawnPoint: {fileID: 1781654844}
@@ -910,18 +908,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &495532573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 495532570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfd8df872e240144880b89522db0cc71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TurnBaseManager
 --- !u!1 &518732688
 GameObject:
   m_ObjectHideFlags: 0
@@ -2405,7 +2391,6 @@ MonoBehaviour:
   height: 2
   distance: 5
   smoothSpeed: 5
-  DefaultMode: 0
 --- !u!1 &1008311214
 GameObject:
   m_ObjectHideFlags: 0

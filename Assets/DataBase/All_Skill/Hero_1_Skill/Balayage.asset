@@ -15,8 +15,8 @@ MonoBehaviour:
   SkillName: Balayage
   Icon: {fileID: 0}
   Damage: 10
-  Critique: 0
-  condition: 0
+  Critique: 1
+  condition: 1
   Effets: "D\xE9s\xE9quilibre"
   Description: "Attaque tournoyante / D\xE9s\xE9quilibre de Flanc"
   IsActive: 1

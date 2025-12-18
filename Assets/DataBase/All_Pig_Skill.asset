@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e6faffeb74ed24c98f74a78f9c226a, type: 3}
+  m_Name: All_Pig_Skill
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_Skill_Table
+  Skills:
+  - {fileID: 11400000, guid: 8e90504a8e5c9eb42a57e44c9b5e33e8, type: 2}
+  - {fileID: 11400000, guid: ec2aa61322ed4124a89cf34ef85d7d62, type: 2}
+  - {fileID: 11400000, guid: 8ef27fa61e7c9634ba2208e8f7f614bb, type: 2}
+  - {fileID: 11400000, guid: e4519982b670c244789abb25365e1ce9, type: 2}

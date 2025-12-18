@@ -266,8 +266,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   EnemyName: Enemy1
   EnemyLvl: 5
-  EnemyHP: 500
+  EnemyHP: 100
+  EnemyXP: 20
   CEnemyHP: 500
   Damage: 15
   Defense: 5
   status: None
+  speed: 5
+  heroAction: {fileID: 0}
+  Enemy_Skill: {fileID: 11400000, guid: 81084a5d81dfcba4394f4bf1fc4297a8, type: 2}
