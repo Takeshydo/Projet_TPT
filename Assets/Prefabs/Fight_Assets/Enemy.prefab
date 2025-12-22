@@ -147,12 +147,10 @@ GameObject:
   - component: {fileID: 1885559257812505530}
   - component: {fileID: 6272455651413482718}
   - component: {fileID: 5821789120444122552}
-  - component: {fileID: 3448632137126218086}
-  - component: {fileID: 7367766830366350995}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Boss_detect
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -275,41 +273,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &3448632137126218086
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3106388083754359187}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.72723746, y: 0.7854762, z: 0.9390291}
-  m_Center: {x: -0.020460146, y: 0.0080669215, z: 0.007709327}
---- !u!114 &7367766830366350995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3106388083754359187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23afe54daf39c914f9283b4b5b98df53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Boss_Detection
-  data: {fileID: 11400000, guid: 08d77be6ee63e484e8aa46f1c00ecaf5, type: 2}
-  Prefabs: {fileID: 3106388083754359187}
 --- !u!1 &4104572845280169482
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1cf7bd69016b844794d43e0f3a39ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss_Detect_Back
-  data: {fileID: 11400000, guid: 31ae599926ca8764e8901e4ff0dbd0b0, type: 2}
 --- !u!65 &8180131508751313100
 BoxCollider:
   m_ObjectHideFlags: 0

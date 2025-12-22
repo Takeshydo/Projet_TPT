@@ -22,9 +22,11 @@ public class CombatManager : MonoBehaviour
     private GameObject CPlayerInstance;
     public CombatState currentState;
 
+    public bool BonusTurn = false;
+
     void Awake()
     {
-        
+
         if (GameManagement.Instance.SelectedPrefabs != null)
         {
             PrefabsChoice = GameManagement.Instance.SelectedPrefabs;
@@ -45,6 +47,7 @@ public class CombatManager : MonoBehaviour
             if (GameManagement.Instance.enteredFromBack)
             {
                 SpawnHeroB();
+                BonusTurn = true;
             }
             else
             {
@@ -81,7 +84,7 @@ public class CombatManager : MonoBehaviour
         if (PrefabsChoice != null)
         {
             CEnemyInstance = Instantiate(PrefabsChoice, spawnPoint.position, spawnPoint.rotation);
-            CEnemyInstance.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f); 
+            CEnemyInstance.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
             enemy.OnDeath += HandleEnemyDeath;
 
@@ -216,6 +219,11 @@ public class CombatManager : MonoBehaviour
 
     public void PlayerTurn()
     {
+        var inputH = CPlayerInstance.GetComponent<Action>();
+        if (!inputH.enabled)
+        {
+            inputH.enabled = true;
+        }
         if (cam != null)
         {
             cam.DefaultMode = CameraFigthing.CameraMode.OnHero;
@@ -235,6 +243,13 @@ public class CombatManager : MonoBehaviour
 
     public void EnemyTurn()
     {
+
+        if (BonusTurn)
+        {
+            BonusTurn = false;
+            StartCoroutine(TeleportFrontZone());
+            return;
+        }
         if (cam != null)
         {
             cam.DefaultMode = CameraFigthing.CameraMode.OnEnemy;
@@ -261,6 +276,11 @@ public class CombatManager : MonoBehaviour
         Debug.Log("CombatManager : Enemi Vaincu");
         currentState = CombatState.Busy;
 
+        string id = GameManagement.Instance.CurrentenemyID;
+        if (!string.IsNullOrEmpty(id))
+        {
+            GameManagement.Instance.defeatedEnemies.Add(id);
+        }
         //ui.gameObject.SetActive(false);*/
         StartCoroutine(EndCombatRoutine(enemy));
     }
@@ -268,7 +288,8 @@ public class CombatManager : MonoBehaviour
     IEnumerator EndCombatRoutine(Enemy enemy)
     {
         yield return new WaitForSeconds(1f);
-
+        var inputH = CPlayerInstance.GetComponent<Action>();
+        inputH.enabled = false;
         var hero = CPlayerInstance.GetComponent<Hero>();
         hero.currentXP += enemy.EnemyXP;
         hero.LevelUp();
@@ -289,5 +310,42 @@ public class CombatManager : MonoBehaviour
             yield return null;
 
         PlayerTurn();
+    }
+
+    IEnumerator TeleportFrontZone()
+    {
+        currentState = CombatState.Busy;
+        var action = CPlayerInstance.GetComponent<Action>();
+        action.enabled = false;
+
+        yield return null;
+
+        //Tp selected 
+        GameObject FrontZone = GameObject.FindGameObjectWithTag(Zone);
+        if (FrontZone != null)
+        {
+            Transform spawnPosition = null;
+
+            foreach (Transform child in FrontZone.transform)
+            {
+                if (child.CompareTag(placement))
+                {
+                    spawnPosition = child;
+                    break;
+                }
+            }
+            if (spawnPosition != null)
+            {
+                BoxCollider box = spawnPosition.GetComponent<BoxCollider>();
+                Vector3 spawnPos = box.bounds.center;
+
+                CPlayerInstance.transform.position = spawnPos;
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        action.enabled = true;
+        PlayerTurn();
+
     }
 }
