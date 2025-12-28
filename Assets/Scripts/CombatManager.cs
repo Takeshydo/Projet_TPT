@@ -12,35 +12,48 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private string Zone = "Front";
     [SerializeField] private string ZoneB = "Back";
 
+    public CombatData data;
     public CameraFigthing cam;
     public UI_Update_Info ui;
-    public GameObject EnemyPrefab;
-    public GameObject Enemy2Prefab;
     public GameObject PlayerPrefab;
+    public GameObject PrefabsChoice;
     public Transform spawnPoint;
     private GameObject CEnemyInstance;
     private GameObject CPlayerInstance;
     public CombatState currentState;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public bool BonusTurn = false;
+
+    void Awake()
+    {
+
+        if (GameManagement.Instance.SelectedPrefabs != null)
+        {
+            PrefabsChoice = GameManagement.Instance.SelectedPrefabs;
+        }
+        else
+        {
+            Debug.Log("Instante null");
+        }
+
+    }
     void Start()
     {
         SpawnEnemy();
-        if (GameManagement.Instance != null)
+
+        if (PrefabsChoice != null)
         {
 
             if (GameManagement.Instance.enteredFromBack)
             {
                 SpawnHeroB();
+                BonusTurn = true;
             }
             else
             {
                 SpawnHeroF();
 
             }
-        }
-        else
-        {
-            Debug.Log("Frr ta pas creer ton GameManagement clown");
         }
 
         WhoStart();
@@ -67,14 +80,20 @@ public class CombatManager : MonoBehaviour
         {
             Destroy(CEnemyInstance);
         }
-        if (EnemyPrefab != null)
+
+        if (PrefabsChoice != null)
         {
-            CEnemyInstance = Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
+            CEnemyInstance = Instantiate(PrefabsChoice, spawnPoint.position, spawnPoint.rotation);
+            CEnemyInstance.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
             enemy.OnDeath += HandleEnemyDeath;
 
             ui.SetNewEnemy(CEnemyInstance);
             cam.SetNewEnemy(CEnemyInstance);
+        }
+        else
+        {
+            Debug.Log("Prefabs n'est pas bien assigné");
         }
     }
     public void SpawnHeroF()
@@ -104,6 +123,7 @@ public class CombatManager : MonoBehaviour
                 var enemy = CEnemyInstance.GetComponent<Enemy>();
                 cam.SetNewHero(CPlayerInstance);
                 playerAction.SetNewHero(CPlayerInstance);
+
                 if (CEnemyInstance != null)
                 {
                     playerAction.SetNewEnemy(CEnemyInstance);
@@ -198,6 +218,11 @@ public class CombatManager : MonoBehaviour
 
     public void PlayerTurn()
     {
+        var inputH = CPlayerInstance.GetComponent<Action>();
+        if (!inputH.enabled)
+        {
+            inputH.enabled = true;
+        }
         if (cam != null)
         {
             cam.DefaultMode = CameraFigthing.CameraMode.OnHero;
@@ -217,6 +242,13 @@ public class CombatManager : MonoBehaviour
 
     public void EnemyTurn()
     {
+
+        if (BonusTurn)
+        {
+            BonusTurn = false;
+            StartCoroutine(TeleportFrontZone());
+            return;
+        }
         if (cam != null)
         {
             cam.DefaultMode = CameraFigthing.CameraMode.OnEnemy;
@@ -243,6 +275,11 @@ public class CombatManager : MonoBehaviour
         Debug.Log("CombatManager : Enemi Vaincu");
         currentState = CombatState.Busy;
 
+        string id = GameManagement.Instance.CurrentenemyID;
+        if (!string.IsNullOrEmpty(id))
+        {
+            GameManagement.Instance.defeatedEnemies.Add(id);
+        }
         //ui.gameObject.SetActive(false);*/
         StartCoroutine(EndCombatRoutine(enemy));
     }
@@ -250,7 +287,8 @@ public class CombatManager : MonoBehaviour
     IEnumerator EndCombatRoutine(Enemy enemy)
     {
         yield return new WaitForSeconds(1f);
-
+        var inputH = CPlayerInstance.GetComponent<Action>();
+        inputH.enabled = false;
         var hero = CPlayerInstance.GetComponent<Hero>();
         hero.currentXP += enemy.EnemyXP;
         hero.LevelUp();
@@ -271,5 +309,42 @@ public class CombatManager : MonoBehaviour
             yield return null;
 
         PlayerTurn();
+    }
+
+    IEnumerator TeleportFrontZone()
+    {
+        currentState = CombatState.Busy;
+        var action = CPlayerInstance.GetComponent<Action>();
+        action.enabled = false;
+
+        yield return null;
+
+        //Tp selected 
+        GameObject FrontZone = GameObject.FindGameObjectWithTag(Zone);
+        if (FrontZone != null)
+        {
+            Transform spawnPosition = null;
+
+            foreach (Transform child in FrontZone.transform)
+            {
+                if (child.CompareTag(placement))
+                {
+                    spawnPosition = child;
+                    break;
+                }
+            }
+            if (spawnPosition != null)
+            {
+                BoxCollider box = spawnPosition.GetComponent<BoxCollider>();
+                Vector3 spawnPos = box.bounds.center;
+
+                CPlayerInstance.transform.position = spawnPos;
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        action.enabled = true;
+        PlayerTurn();
+
     }
 }

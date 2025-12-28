@@ -887,10 +887,11 @@ MonoBehaviour:
   placement: FighterPosition
   Zone: Front
   ZoneB: Back
+  data: {fileID: 0}
   cam: {fileID: 987720831}
   ui: {fileID: 1764444600}
-  EnemyPrefab: {fileID: 3106388083754359187, guid: edd61043c9e57d94b9b7e4cb0f32af59, type: 3}
   PlayerPrefab: {fileID: 1737597223390585619, guid: 087704e9117ab714aaffb494932d2727, type: 3}
+  PrefabsChoice: {fileID: 0}
   spawnPoint: {fileID: 1781654844}
   currentState: 0
 --- !u!4 &495532572
@@ -4110,7 +4111,7 @@ RectTransform:
   m_GameObject: {fileID: 1764444598}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9759986, y: 0.9759986, z: 0.9759986}
+  m_LocalScale: {x: 0.70855546, y: 0.70855546, z: 0.70855546}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1618749160}

@@ -141,6 +141,8 @@ MonoBehaviour:
   actionLeft: 2
   cantMove: 0
   cantAttack: 0
+  isMyTurn: 0
+  IsDead: 0
   cantObject: 0
   equippedSkills: []
 --- !u!114 &-7756158408608734470

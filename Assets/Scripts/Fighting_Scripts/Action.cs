@@ -28,6 +28,7 @@ public class Action : MonoBehaviour
     public bool cantObject = false;
     public bool IsTurnFinished => actionLeft <= 0;
     private bool zoneReady = false;
+    public bool IsDead = false;
 
     public List<Skills_Structure> equippedSkills = new List<Skills_Structure>();
 
@@ -93,15 +94,6 @@ public class Action : MonoBehaviour
         cantMove = false;
         cantAttack = false;
         cantObject = false;
-    }
-
-    public void EndTurn()
-    {
-        if (actionLeft == 0)
-        {
-            Debug.Log("Fin du tour");
-        }
-
     }
 
     public DamageResult AttackAction(Skills_Structure skills)
@@ -208,7 +200,14 @@ public class Action : MonoBehaviour
         if (!zoneReady || player == null) return;
         MovePlayerTo(zoneOrder[currentZoneIndex]);
     }
-
+    public void Death()
+    {
+        if(Herostat.currentHP == 0)
+        {
+            IsDead = true; 
+            Debug.Log ("Le Player est mort");
+        }
+    }
 }
 public struct DamageResult
 {

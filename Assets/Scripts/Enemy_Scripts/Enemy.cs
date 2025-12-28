@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     //Var Donnée du Monstre
     public string EnemyName = "Enemy1";
     public int EnemyLvl = 5;
+    public bool IsDead = false;
     public float EnemyHP = 10.0f;
     public float EnemyXP = 20f;
     [SerializeField] private float CEnemyHP;
@@ -21,10 +22,11 @@ public class Enemy : MonoBehaviour
     public event System.Action<Enemy> OnDeath;
     public Action heroAction;
     private CombatManager combatManager;
-    [SerializeField] private Wolf_Skill_Table wolf_Skill;
+    [SerializeField] private Enemy_Skill_Table Enemy_Skill;
 
     private bool EnemyIsDead => CEnemyHP <= 0;
     public bool hasFinished { get; private set; }
+
     void Start()
     {
         CEnemyHP = EnemyHP;
@@ -33,8 +35,6 @@ public class Enemy : MonoBehaviour
         combatManager = FindFirstObjectByType<CombatManager>();
 
     }
-
-    // Update is called once per frame
     void Update()
     {
 
@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour
     {
         if (heroAction == null) return;
         ZoneArea.ZoneType heroZone = ZoneArea.TagToZoneType(heroAction.GetCurrentZone());
-        var possibleAttack = wolf_Skill.Skills
+        var possibleAttack = Enemy_Skill.Skills
             .Where(a => a.validZones.Contains(heroZone))
             .ToList();
 
@@ -87,11 +87,11 @@ public class Enemy : MonoBehaviour
             EndTurn();
             return;
         }
-        Wolf_Skill chosenSkill = ChoosedAttack(possibleAttack);
+        Enemy_Skill chosenSkill = ChoosedAttack(possibleAttack);
         ExecuteAttack(chosenSkill);
     }
 
-    Wolf_Skill ChoosedAttack(List<Wolf_Skill> attacks)
+    Enemy_Skill ChoosedAttack(List<Enemy_Skill> attacks)
     {
         float Totalweight = attacks.Sum(a => a.Proba);
         float roll = Random.value * Totalweight;
@@ -109,7 +109,7 @@ public class Enemy : MonoBehaviour
         return attacks[0];
     }
 
-    void ExecuteAttack(Wolf_Skill attack)
+    void ExecuteAttack(Enemy_Skill attack)
     {
         Debug.Log($"L'ennemi utilise {attack.AttackName}");
 
@@ -142,5 +142,14 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         EndTurn();
+    }
+
+    public void Death()
+    {
+        if(CEnemyHP == 0)
+        {
+            IsDead = true; 
+            Debug.Log ("L'enemy est mort");
+        }
     }
 }
