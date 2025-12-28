@@ -61,7 +61,7 @@ public class CombatManager : MonoBehaviour
 
     public void SpawnEnemy()
     {
-
+        
         //Choper le spawning spécifique du monstre
         if (CEnemyInstance != null)
         {
@@ -72,7 +72,6 @@ public class CombatManager : MonoBehaviour
             CEnemyInstance = Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
             Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
             enemy.OnDeath += HandleEnemyDeath;
-
 
             ui.SetNewEnemy(CEnemyInstance);
             cam.SetNewEnemy(CEnemyInstance);
