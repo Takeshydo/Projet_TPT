@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d03fc940ee8e7dc4696af6cdc49e143a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - buttonPrefab: {fileID: 1553883130937185342, guid: 8259dd7671e54c74cad59f0b1b3add8c, type: 3}
+  - Hero: {fileID: 1737597223390585619, guid: 087704e9117ab714aaffb494932d2727, type: 3}
+  - buttonParent: {instanceID: 0}
+  - skillTable: {fileID: 11400000, guid: 598ed0c211c5a994d9cb7c58e7840bed, type: 2}
+  - HeroAction: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e6faffeb74ed24c98f74a78f9c226a, type: 3}
+  m_Name: All_Wolf_Skills
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_Skill_Table
+  Skills:
+  - {fileID: 11400000, guid: da213d69844fd5648a0c3a65c164d069, type: 2}
+  - {fileID: 11400000, guid: c481426387b067e418e32323c854a7cc, type: 2}
+  - {fileID: 11400000, guid: c8af258432c4f73458cbf59398ec7c03, type: 2}

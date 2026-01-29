@@ -3,12 +3,25 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - ZoneID
+  - Front
+  - Right
+  - Back
+  - Left
+  - FighterPosition
+  - Fighter
+  - ladder
+  - ground
+  - Enemy
+  - detect
+  - floor
+  - Boss_detect
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Obstacle
   - Water
   - UI
   - 

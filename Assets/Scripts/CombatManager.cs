@@ -1,0 +1,353 @@
+using UnityEngine;
+using System.Collections;
+using NUnit.Framework;
+using JetBrains.Annotations;
+using UnityEngine.SceneManagement;
+
+public class CombatManager : MonoBehaviour
+{
+    //private bool fighter = true;
+
+    [SerializeField] private string placement = "FighterPosition";
+    [SerializeField] private string Zone = "Front";
+    [SerializeField] private string ZoneB = "Back";
+
+    public CombatData data;
+    public CameraFigthing cam;
+    public UI_Update_Info ui;
+    public GameObject PlayerPrefab;
+    public GameObject PrefabsChoice;
+    public Transform spawnPoint;
+    private GameObject CEnemyInstance;
+    private GameObject CPlayerInstance;
+    public CombatState currentState;
+
+    public bool BonusTurn = false;
+
+    void Awake()
+    {
+
+        if (GameManagement.Instance.SelectedPrefabs != null)
+        {
+            PrefabsChoice = GameManagement.Instance.SelectedPrefabs;
+        }
+        else
+        {
+            Debug.Log("Instante null");
+        }
+
+    }
+    void Start()
+    {
+        SpawnEnemy();
+
+        if (PrefabsChoice != null)
+        {
+
+            if (GameManagement.Instance.enteredFromBack)
+            {
+                SpawnHeroB();
+                BonusTurn = true;
+            }
+            else
+            {
+                SpawnHeroF();
+
+            }
+        }
+
+        // WhoStart();
+    }
+
+    void Update()
+    {
+        if (currentState == CombatState.PlayerTurn)
+        {
+            var action = CPlayerInstance.GetComponent<Action>();
+            if (action.IsTurnFinished)
+            {
+                EnemyTurn();
+            }
+        }
+
+    }
+
+    public void SpawnEnemy()
+    {
+
+        //Choper le spawning spécifique du monstre
+        if (CEnemyInstance != null)
+        {
+            Destroy(CEnemyInstance);
+        }
+
+        if (PrefabsChoice != null)
+        {
+            CEnemyInstance = Instantiate(PrefabsChoice, spawnPoint.position, spawnPoint.rotation);
+            CEnemyInstance.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
+            enemy.OnDeath += HandleEnemyDeath;
+
+            ui.SetNewEnemy(CEnemyInstance);
+            cam.SetNewEnemy(CEnemyInstance);
+        }
+        else
+        {
+            Debug.Log("Prefabs n'est pas bien assigné");
+        }
+    }
+    public void SpawnHeroF()
+    {
+        GameObject Position = GameObject.FindGameObjectWithTag(placement);
+        GameObject FrontZone = GameObject.FindGameObjectWithTag(Zone);
+
+        if (FrontZone != null)
+        {
+            Transform spawnPosition = null;
+
+            foreach (Transform child in FrontZone.transform)
+            {
+                if (child.CompareTag(placement))
+                {
+                    spawnPosition = child;
+                    break;
+                }
+            }
+            if (spawnPosition != null)
+            {
+                BoxCollider box = spawnPosition.GetComponent<BoxCollider>();
+                Vector3 spawnPos = box.bounds.center;
+
+                CPlayerInstance = Instantiate(PlayerPrefab, spawnPos, Quaternion.identity);
+                var playerAction = CPlayerInstance.GetComponent<Action>();
+                var enemy = CEnemyInstance.GetComponent<Enemy>();
+                cam.SetNewHero(CPlayerInstance);
+                playerAction.SetNewHero(CPlayerInstance);
+
+                if (CEnemyInstance != null)
+                {
+                    playerAction.SetNewEnemy(CEnemyInstance);
+                    enemy.SetNewHero(playerAction);
+                }
+            }
+            else
+            {
+                Debug.LogError("Clown i a pas de ref");
+            }
+        }
+        else
+        {
+            Debug.LogError("Rien connard");
+        }
+    }
+
+    public void SpawnHeroB()
+    {
+        GameObject Position = GameObject.FindGameObjectWithTag(placement);
+        GameObject FrontZone = GameObject.FindGameObjectWithTag(ZoneB);
+
+        if (FrontZone != null)
+        {
+            Transform spawnPosition = null;
+
+            foreach (Transform child in FrontZone.transform)
+            {
+                if (child.CompareTag(placement))
+                {
+                    spawnPosition = child;
+                    break;
+                }
+            }
+            if (spawnPosition != null)
+            {
+                BoxCollider box = spawnPosition.GetComponent<BoxCollider>();
+                Vector3 spawnPos = box.bounds.center;
+
+                CPlayerInstance = Instantiate(PlayerPrefab, spawnPos, Quaternion.identity);
+                var playerAction = CPlayerInstance.GetComponent<Action>();
+                var enemy = CEnemyInstance.GetComponent<Enemy>();
+                cam.SetNewHero(CPlayerInstance);
+                playerAction.SetNewHero(CPlayerInstance);
+                if (CEnemyInstance != null)
+                {
+                    playerAction.SetNewEnemy(CEnemyInstance);
+                    enemy.SetNewHero(playerAction);
+
+                }
+            }
+            else
+            {
+                Debug.LogError("Clown i a pas de ref");
+            }
+        }
+        else
+        {
+            Debug.LogError("Rien connard");
+        }
+    }
+
+
+    //System TPT c'est parti !!!
+
+    public enum CombatState
+    {
+        PlayerTurn,
+        EnemyTurn,
+        Busy,
+    }
+
+    public void WhoStart()
+    {
+        if (CPlayerInstance != null && CEnemyInstance != null)
+        {
+
+            var SpeedPlayer = CPlayerInstance.GetComponent<Hero>();
+            var SpeedEnemy = CEnemyInstance.GetComponent<Enemy>();
+
+            if (SpeedEnemy.speed > SpeedPlayer.speed)
+            {
+                EnemyTurn();
+            }
+            if (SpeedEnemy.speed < SpeedPlayer.speed)
+            {
+                PlayerTurn();
+
+            }
+        }
+    }
+
+    public void PlayerTurn()
+    {
+        var inputH = CPlayerInstance.GetComponent<Action>();
+        if (!inputH.enabled)
+        {
+            inputH.enabled = true;
+        }
+        if (cam != null)
+        {
+            cam.DefaultMode = CameraFigthing.CameraMode.OnHero;
+        }
+        Transform actionPanel = ui.transform.Find("Action");
+        if (actionPanel != null)
+        {
+            actionPanel.gameObject.SetActive(true);
+        }
+        else { Debug.Log("gameobject Action pas trouvé"); }
+        currentState = CombatState.PlayerTurn;
+        var action = CPlayerInstance.GetComponent<Action>();
+        action.StartTurn();
+
+        ui.ActionMenu();
+    }
+
+    public void EnemyTurn()
+    {
+
+        if (BonusTurn)
+        {
+            BonusTurn = false;
+            StartCoroutine(TeleportFrontZone());
+            return;
+        }
+        if (cam != null)
+        {
+            cam.DefaultMode = CameraFigthing.CameraMode.OnEnemy;
+        }
+        Transform actionPanel = ui.transform.Find("Action");
+        if (actionPanel != null)
+        {
+            actionPanel.gameObject.SetActive(false);
+        }
+        else { Debug.Log("Action pas trouvé"); }
+        currentState = CombatState.EnemyTurn;
+        Enemy enemy = CEnemyInstance.GetComponent<Enemy>();
+        StartCoroutine(EnemyRoutine(enemy));
+
+    }
+
+    public void IsDead()
+    {
+
+    }
+
+    void HandleEnemyDeath(Enemy enemy)
+    {
+        Debug.Log("CombatManager : Enemi Vaincu");
+        currentState = CombatState.Busy;
+
+        string id = GameManagement.Instance.CurrentenemyID;
+        if (!string.IsNullOrEmpty(id))
+        {
+            GameManagement.Instance.defeatedEnemies.Add(id);
+        }
+        //ui.gameObject.SetActive(false);*/
+        StartCoroutine(EndCombatRoutine(enemy));
+    }
+
+    IEnumerator EndCombatRoutine(Enemy enemy)
+    {
+        var inputH = CPlayerInstance.GetComponent<Action>();
+        var inputUI = ui.GetComponent<UI_Update_Info>();
+        inputUI.enabled = false;
+        inputH.enabled = false;
+
+        yield return new WaitForSeconds(1f);
+        var hero = CPlayerInstance.GetComponent<Hero>();
+        hero.currentXP += enemy.EnemyXP;
+        hero.LevelUp();
+        Debug.Log("XP " + hero.currentXP + " ");
+
+        Destroy(enemy.gameObject);
+        Debug.Log("Combat terminé");
+
+
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene("Foret_1");
+    }
+
+    IEnumerator EnemyRoutine(Enemy enemy)
+    {
+        enemy.StartTurn();
+        while (!enemy.hasFinished)
+            yield return null;
+
+        PlayerTurn();
+    }
+
+    IEnumerator TeleportFrontZone()
+    {
+        currentState = CombatState.Busy;
+        var action = CPlayerInstance.GetComponent<Action>();
+        action.enabled = false;
+
+        yield return null;
+
+        //Tp selected 
+        GameObject FrontZone = GameObject.FindGameObjectWithTag(Zone);
+        if (FrontZone != null)
+        {
+            Transform spawnPosition = null;
+
+            foreach (Transform child in FrontZone.transform)
+            {
+                if (child.CompareTag(placement))
+                {
+                    spawnPosition = child;
+                    break;
+                }
+            }
+            if (spawnPosition != null)
+            {
+                BoxCollider box = spawnPosition.GetComponent<BoxCollider>();
+                Vector3 spawnPos = box.bounds.center;
+
+                CPlayerInstance.transform.position = spawnPos;
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        action.enabled = true;
+        PlayerTurn();
+
+    }
+}
