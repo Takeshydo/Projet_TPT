@@ -56,7 +56,7 @@ public class CombatManager : MonoBehaviour
             }
         }
 
-        WhoStart();
+        // WhoStart();
     }
 
     void Update()
@@ -74,7 +74,7 @@ public class CombatManager : MonoBehaviour
 
     public void SpawnEnemy()
     {
-        
+
         //Choper le spawning spécifique du monstre
         if (CEnemyInstance != null)
         {
@@ -286,9 +286,12 @@ public class CombatManager : MonoBehaviour
 
     IEnumerator EndCombatRoutine(Enemy enemy)
     {
-        yield return new WaitForSeconds(1f);
         var inputH = CPlayerInstance.GetComponent<Action>();
+        var inputUI = ui.GetComponent<UI_Update_Info>();
+        inputUI.enabled = false;
         inputH.enabled = false;
+
+        yield return new WaitForSeconds(1f);
         var hero = CPlayerInstance.GetComponent<Hero>();
         hero.currentXP += enemy.EnemyXP;
         hero.LevelUp();
