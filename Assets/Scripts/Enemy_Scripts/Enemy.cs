@@ -31,9 +31,7 @@ public class Enemy : MonoBehaviour
     {
         CEnemyHP = EnemyHP;
         status = "None";
-
         combatManager = FindFirstObjectByType<CombatManager>();
-
     }
     void Update()
     {

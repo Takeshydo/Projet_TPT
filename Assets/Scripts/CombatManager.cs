@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using NUnit.Framework;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
 public class CombatManager : MonoBehaviour
@@ -26,7 +27,6 @@ public class CombatManager : MonoBehaviour
 
     void Awake()
     {
-
         if (GameManagement.Instance.SelectedPrefabs != null)
         {
             PrefabsChoice = GameManagement.Instance.SelectedPrefabs;
@@ -48,10 +48,14 @@ public class CombatManager : MonoBehaviour
             {
                 SpawnHeroB();
                 BonusTurn = true;
+                Transform SpringArm = CPlayerInstance.transform.Find("SpringArm");
+                SpringArm.gameObject.SetActive(false);
             }
             else
             {
                 SpawnHeroF();
+                Transform SpringArm = CPlayerInstance.transform.Find("SpringArm");
+                SpringArm.gameObject.SetActive(false);
 
             }
         }
@@ -115,10 +119,16 @@ public class CombatManager : MonoBehaviour
             }
             if (spawnPosition != null)
             {
+                
+               
                 BoxCollider box = spawnPosition.GetComponent<BoxCollider>();
                 Vector3 spawnPos = box.bounds.center;
-
+                
+                
                 CPlayerInstance = Instantiate(PlayerPrefab, spawnPos, Quaternion.identity);
+                CPlayerInstance.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                CPlayerInstance.GetComponent<Player_Mouvement>().enabled = false;
+                
                 var playerAction = CPlayerInstance.GetComponent<Action>();
                 var enemy = CEnemyInstance.GetComponent<Enemy>();
                 cam.SetNewHero(CPlayerInstance);
@@ -286,10 +296,8 @@ public class CombatManager : MonoBehaviour
 
     IEnumerator EndCombatRoutine(Enemy enemy)
     {
-        var inputH = CPlayerInstance.GetComponent<Action>();
-        var inputUI = ui.GetComponent<UI_Update_Info>();
-        inputUI.enabled = false;
-        inputH.enabled = false;
+        CPlayerInstance.GetComponent<Action>().enabled = false;
+        ui.GetComponent<UI_Update_Info>().enabled = false;
 
         yield return new WaitForSeconds(1f);
         var hero = CPlayerInstance.GetComponent<Hero>();
@@ -302,6 +310,7 @@ public class CombatManager : MonoBehaviour
 
 
         yield return new WaitForSeconds(5f);
+        CPlayerInstance.GetComponent<Player_Mouvement>().enabled = true;
         SceneManager.LoadScene("Foret_1");
     }
 

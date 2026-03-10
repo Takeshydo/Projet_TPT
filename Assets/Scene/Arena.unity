@@ -890,7 +890,7 @@ MonoBehaviour:
   data: {fileID: 0}
   cam: {fileID: 987720831}
   ui: {fileID: 1764444600}
-  PlayerPrefab: {fileID: 1737597223390585619, guid: 087704e9117ab714aaffb494932d2727, type: 3}
+  PlayerPrefab: {fileID: 4781485804910853827, guid: 814a722cb9024d94683307b4d2952763, type: 3}
   PrefabsChoice: {fileID: 0}
   spawnPoint: {fileID: 1781654844}
   currentState: 0
@@ -2229,7 +2229,7 @@ Transform:
   m_GameObject: {fileID: 987720826}
   serializedVersion: 2
   m_LocalRotation: {x: 0.070159, y: -0.70361763, z: 0.07015901, w: 0.7036176}
-  m_LocalPosition: {x: 20.02, y: 3.93, z: -0.63000005}
+  m_LocalPosition: {x: 20.02, y: 9.32, z: -0.63000005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2390,8 +2390,8 @@ MonoBehaviour:
   Player: {fileID: 0}
   PlayerT: {fileID: 0}
   EnemyT: {fileID: 0}
-  height: 2
-  distance: 5
+  height: 6
+  distance: 10
   smoothSpeed: 5
   DefaultMode: 0
 --- !u!1 &1008311214

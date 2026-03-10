@@ -19,12 +19,15 @@ public class Player_Mouvement : MonoBehaviour
     public Transform front;
 
     private Rigidbody rb;
+    private Animator anim;
     private Vector3 moveInput;
     private float verticalInput;
+    
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponentInChildren<Animator>();
 
         if (cameraTransform == null)
         {
@@ -45,7 +48,10 @@ public class Player_Mouvement : MonoBehaviour
         if (Keyboard.current.aKey.isPressed) moveInput += Vector3.left;
         if (Keyboard.current.dKey.isPressed) moveInput += Vector3.right;
         moveInput.Normalize();
-
+        
+        //Animation : Set Variable de l'animator
+        anim.SetFloat("Speed", Mathf.Abs(moveInput.magnitude));
+        
         // Input vertical sur échelle
         verticalInput = 0f;
         if (isOnLadder)
